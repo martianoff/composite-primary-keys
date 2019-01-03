@@ -12,7 +12,7 @@ class NonCompositeFindTest extends CompositeKeyBaseUnit
     {
         $app['config']->set('database.default', 'testing');
         $app['router']->get('non-composite-users/{testUserNonComposite}', function (TestUserNonComposite $testUserNonComposite) {
-            return $testUserNonComposite->setHidden(['created_at','updated_at'])->toJson();
+            return $testUserNonComposite->setHidden(['created_at', 'updated_at'])->toJson();
         })->middleware(SubstituteBindings::class);
     }
 
@@ -106,6 +106,6 @@ class NonCompositeFindTest extends CompositeKeyBaseUnit
     {
         $data = $this->call('GET', 'non-composite-users/1');
         $this->assertEquals(200, $data->getStatusCode());
-        $this->assertEquals($model->setHidden(['created_at','updated_at'])->toJson(), $data->getContent());
+        $this->assertEquals($model->setHidden(['created_at', 'updated_at'])->toJson(), $data->getContent());
     }
 }
