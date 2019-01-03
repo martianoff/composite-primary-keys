@@ -14,7 +14,7 @@ class ModelSerializationTest extends CompositeKeyBaseUnit
     public function testModelSerialization()
     {
         $model = TestUser::find([
-            'user_id' => 1,
+            'user_id'         => 1,
             'organization_id' => 100,
         ]);
         $this->assertEquals(0, $model->counter);

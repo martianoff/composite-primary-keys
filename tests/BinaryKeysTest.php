@@ -23,7 +23,7 @@ class BinaryKeysTest extends CompositeKeyBaseUnit
          * @var TestBinaryUser
          */
         $model = TestBinaryUser::find([
-            'user_id' => md5(20000, true),
+            'user_id'         => md5(20000, true),
             'organization_id' => 100,
         ]);
         $this->assertNotNull($model);
@@ -49,10 +49,10 @@ class BinaryKeysTest extends CompositeKeyBaseUnit
          * @var Collection|TestBinaryUser[]
          */
         $models = TestBinaryUser::find([[
-            'user_id' => md5(20000, true),
+            'user_id'         => md5(20000, true),
             'organization_id' => 100,
         ], [
-            'user_id' => md5(20001, true),
+            'user_id'         => md5(20001, true),
             'organization_id' => 101,
         ]]);
         $this->assertNotNull($models);

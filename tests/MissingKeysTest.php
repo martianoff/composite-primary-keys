@@ -36,7 +36,7 @@ class MissingKeysTest extends CompositeKeyBaseUnit
             $models = TestUser::find([[
                 'organization_id' => 100,
             ], [
-                'user_id' => 2,
+                'user_id'         => 2,
                 'organization_id' => 100,
             ]]);
         } catch (MissingPrimaryKeyValueException $missingPrimaryKeyValueException) {

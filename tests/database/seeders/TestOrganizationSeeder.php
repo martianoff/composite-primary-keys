@@ -13,11 +13,11 @@ class TestOrganizationSeeder extends Seeder
     {
         \MaksimM\CompositePrimaryKeys\Tests\Stubs\TestOrganization::create([
             'organization_id' => 100,
-            'name' => 'Foo',
+            'name'            => 'Foo',
         ]);
         \MaksimM\CompositePrimaryKeys\Tests\Stubs\TestOrganization::create([
             'organization_id' => 101,
-            'name' => 'Bar',
+            'name'            => 'Bar',
         ]);
     }
 }
