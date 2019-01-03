@@ -16,7 +16,7 @@ class OtherQueriesTest extends CompositeKeyBaseUnit
             'user_id'         => 1,
             'organization_id' => 100,
         ])
-            ->where('user_id',1)
+            ->where('user_id', 1)
             ->first();
         $this->assertNotNull($model);
         $this->assertInstanceOf(TestUser::class, $model);
@@ -39,7 +39,7 @@ class OtherQueriesTest extends CompositeKeyBaseUnit
      */
     public function validateDeleteModel()
     {
-        /**
+        /*
          * @var TestUser
          */
         TestUser::find([
@@ -58,7 +58,7 @@ class OtherQueriesTest extends CompositeKeyBaseUnit
      */
     public function validateDeleteWithoutFetching()
     {
-        /**
+        /*
          * @var TestUser
          */
         TestUser::whereKey([
@@ -71,5 +71,4 @@ class OtherQueriesTest extends CompositeKeyBaseUnit
             'organization_id' => 100,
         ]));
     }
-
 }
