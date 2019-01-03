@@ -8,7 +8,6 @@ use MaksimM\CompositePrimaryKeys\Tests\Stubs\TestUserNonComposite;
 
 class NonCompositeFindTest extends CompositeKeyBaseUnit
 {
-
     protected function getEnvironmentSetUp($app)
     {
         $app['config']->set('database.default', 'testing');
