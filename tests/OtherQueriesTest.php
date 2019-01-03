@@ -25,9 +25,9 @@ class OtherQueriesTest extends CompositeKeyBaseUnit
     }
 
     /** @test
-     *  @depends  validateSingleModelLookup
+     *  @depends  validateKeyExclusion
      */
-    public function validateSingleModelLookupModel(TestUser $model)
+    public function validateKeyExclusionModel(TestUser $model)
     {
         $this->assertEquals(1, $model->user_id);
         $this->assertEquals(101, $model->organization_id);
