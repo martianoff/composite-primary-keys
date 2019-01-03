@@ -32,7 +32,7 @@ trait HasCompositePrimaryKey
 
         foreach ((new static())->applyIds($ids)->get() as $model) {
             if ($model->delete()) {
-                ++$count;
+                $count++;
             }
         }
 
@@ -209,9 +209,9 @@ trait HasCompositePrimaryKey
      *
      * @param $normalizedKey
      *
-     * @return array
-     *
      * @throws WrongKeyException
+     *
+     * @return array
      */
     public function parseNormalizedKey($normalizedKey)
     {
@@ -229,9 +229,9 @@ trait HasCompositePrimaryKey
      * @param $key
      * @param $hexValue
      *
-     * @return bool|string
-     *
      * @throws WrongKeyException
+     *
+     * @return bool|string
      */
     private function recoverBinaryKey($key, $hexValue)
     {
@@ -247,10 +247,10 @@ trait HasCompositePrimaryKey
      *
      * @param array|int $ids
      *
-     * @return \Illuminate\Database\Eloquent\Builder
-     *
      * @throws MissingPrimaryKeyValueException
      * @throws WrongKeyException
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function newQueryForRestoration($ids)
     {
@@ -300,9 +300,9 @@ trait HasCompositePrimaryKey
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
      *
-     * @return \Illuminate\Database\Eloquent\Builder
-     *
      * @throws MissingPrimaryKeyValueException
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     protected function setKeysForSaveQuery(Builder $query)
     {

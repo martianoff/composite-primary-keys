@@ -15,9 +15,9 @@ class CompositeKeyQueryBuilder extends Builder
      * @param mixed $id
      * @param array $columns
      *
-     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|static[]|static|null
-     *
      * @throws WrongKeyException
+     *
+     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|static[]|static|null
      */
     public function find($id, $columns = ['*'])
     {
@@ -33,9 +33,9 @@ class CompositeKeyQueryBuilder extends Builder
      *
      * @param mixed $ids
      *
-     * @return $this
-     *
      * @throws WrongKeyException
+     *
+     * @return $this
      */
     public function whereKey($ids)
     {
@@ -47,9 +47,9 @@ class CompositeKeyQueryBuilder extends Builder
      *
      * @param mixed $ids
      *
-     * @return $this
-     *
      * @throws WrongKeyException
+     *
+     * @return $this
      */
     public function whereKeyNot($ids)
     {

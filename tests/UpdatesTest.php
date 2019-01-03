@@ -13,7 +13,7 @@ class UpdatesTest extends CompositeKeyBaseUnit
          * @var TestUser
          */
         $model = TestUser::find([
-            'user_id' => 1,
+            'user_id'         => 1,
             'organization_id' => 100,
         ]);
         $this->assertNotNull($model);

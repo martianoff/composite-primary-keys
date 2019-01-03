@@ -14,7 +14,7 @@ class FindTest extends CompositeKeyBaseUnit
          * @var TestUser
          */
         $model = TestUser::find([
-            'user_id' => 1,
+            'user_id'         => 1,
             'organization_id' => 100,
         ]);
         $this->assertNotNull($model);
@@ -40,13 +40,13 @@ class FindTest extends CompositeKeyBaseUnit
          * @var Collection|TestUser[]
          */
         $models = TestUser::find([[
-            'user_id' => 1,
+            'user_id'         => 1,
             'organization_id' => 100,
         ], [
-            'user_id' => 1,
+            'user_id'         => 1,
             'organization_id' => 101,
         ], [
-            'user_id' => 2,
+            'user_id'         => 2,
             'organization_id' => 101,
         ]]);
         $this->assertNotNull($models);
@@ -78,13 +78,13 @@ class FindTest extends CompositeKeyBaseUnit
          * @var Collection|TestUser[]
          */
         $models = TestUser::findMany([[
-            'user_id' => 1,
+            'user_id'         => 1,
             'organization_id' => 100,
         ], [
-            'user_id' => 1,
+            'user_id'         => 1,
             'organization_id' => 101,
         ], [
-            'user_id' => 2,
+            'user_id'         => 2,
             'organization_id' => 101,
         ]]);
         $this->assertNotNull($models);

@@ -12,14 +12,14 @@ class TestUserNonCompositeSeeder extends Seeder
     public function run()
     {
         \MaksimM\CompositePrimaryKeys\Tests\Stubs\TestUserNonComposite::create([
-            'user_id' => 1,
+            'user_id'         => 1,
             'organization_id' => \MaksimM\CompositePrimaryKeys\Tests\Stubs\TestOrganization::whereName('Foo')
                 ->first()
                 ->organization_id,
             'name' => 'Foo',
         ]);
         \MaksimM\CompositePrimaryKeys\Tests\Stubs\TestUserNonComposite::create([
-            'user_id' => 2,
+            'user_id'         => 2,
             'organization_id' => \MaksimM\CompositePrimaryKeys\Tests\Stubs\TestOrganization::whereName('Foo')
                 ->first()
                 ->organization_id,
