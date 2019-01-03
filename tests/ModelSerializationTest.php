@@ -13,6 +13,9 @@ class ModelSerializationTest extends CompositeKeyBaseUnit
     /** @test */
     public function testModelSerialization()
     {
+        /**
+         * @var TestUser $model
+         */
         $model = TestUser::find([
             'user_id'         => 1,
             'organization_id' => 100,

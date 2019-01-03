@@ -79,20 +79,20 @@ Simply add \MaksimM\CompositePrimaryKeys\Http\Traits\HasCompositePrimaryKey trai
     ```php
     class TestBinaryUser extends Model
     {
-      use \MaksimM\CompositePrimaryKeys\Http\Traits\HasCompositePrimaryKey;
-    
-      protected $table = 'binary_users';
-    
-      public $timestamps = false;
-    
-      protected $binaryColumns = [
+        use \MaksimM\CompositePrimaryKeys\Http\Traits\HasCompositePrimaryKey;
+        
+        protected $table = 'binary_users';
+        
+        public $timestamps = false;
+        
+        protected $binaryColumns = [
           'user_id'
-      ];
-    
-      protected $primaryKey = [
+        ];
+        
+        protected $primaryKey = [
           'user_id',
           'organization_id',
-      ];
+        ];
     }
     ```
     
@@ -100,13 +100,17 @@ Simply add \MaksimM\CompositePrimaryKeys\Http\Traits\HasCompositePrimaryKey trai
     
     ```php
     $router->get('binary-users/{binaryUser}', function (BinaryUser $binaryUser) {
-      return $binaryUser->toJson();
+        return $binaryUser->toJson();
     })->middleware('bindings')
     ```
+    
+    request:
     
     ```http request
     GET /binary-users/D9798CDF31C02D86B8B81CC119D94836___100
     ```
+    
+    response:
     
     ```json
     {"user_id":"D9798CDF31C02D86B8B81CC119D94836","organization_id":"100","name":"Foo","user_id___organization_id":"D9798CDF31C02D86B8B81CC119D94836___100"}

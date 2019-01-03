@@ -2,7 +2,6 @@
   "name": "maksimru/composite-primary-keys",
   "description": "Allows to use composite primary keys with optional binary primary columns",
   "keywords": [
-    "debugbar",
     "eloquent",
     "composite",
     "binary",
