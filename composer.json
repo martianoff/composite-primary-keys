@@ -1,0 +1,55 @@
+{
+  "name": "maksimru/composite-primary-keys",
+  "description": "Allows to use composite primary keys with optional binary primary columns",
+  "keywords": [
+    "debugbar",
+    "eloquent",
+    "composite",
+    "binary",
+    "keys"
+  ],
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Maksim Martianov",
+      "email": "maxmtmn@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7",
+    "illuminate/cache": "^5.5",
+    "illuminate/contracts": "^5.5",
+    "illuminate/queue": "^5.5",
+    "illuminate/redis": "^5.5",
+    "illuminate/session": "^5.5",
+    "illuminate/support": "^5.5"
+  },
+  "require-dev": {
+    "laravel/framework": "^5.5",
+    "orchestra/testbench": "~3.0",
+    "orchestra/testbench-browser-kit": "~3.1",
+    "orchestra/database": "~3.0",
+    "mockery/mockery": "0.9.*",
+    "fzaninotto/faker": "~1.4",
+    "phpunit/phpunit": "6",
+    "barryvdh/laravel-debugbar": "^3.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "MaksimM\\CompositePrimaryKeys\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "classmap": [
+      "tests/database/migrations",
+      "tests/database/seeders"
+    ],
+    "psr-4": {
+      "MaksimM\\CompositePrimaryKeys\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit"
+  }
+}
