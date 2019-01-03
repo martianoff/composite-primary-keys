@@ -24,10 +24,14 @@ class CompositeKeyBaseUnit extends TestCase
         $this->seed(\TestUserNonCompositeSeeder::class);
         $this->seed(\TestBinaryUserSeeder::class);
 
-        \DB::listen(function (QueryExecuted $queryExecuted) {
-            var_dump($queryExecuted->sql);
-            var_dump($queryExecuted->bindings);
-        });
+        if(env('DEBUG_QUERY_LOG', true)) {
+            \DB::listen(
+                function (QueryExecuted $queryExecuted) {
+                    var_dump($queryExecuted->sql);
+                    var_dump($queryExecuted->bindings);
+                }
+            );
+        }
     }
 
     /**

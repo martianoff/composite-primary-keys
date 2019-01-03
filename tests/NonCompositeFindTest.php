@@ -3,10 +3,20 @@
 namespace MaksimM\CompositePrimaryKeys\Tests;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Routing\Middleware\SubstituteBindings;
 use MaksimM\CompositePrimaryKeys\Tests\Stubs\TestUserNonComposite;
 
 class NonCompositeFindTest extends CompositeKeyBaseUnit
 {
+
+    protected function getEnvironmentSetUp($app)
+    {
+        $app['config']->set('database.default', 'testing');
+        $app['router']->get('non-composite-users/{testUserNonComposite}', function (TestUserNonComposite $testUserNonComposite) {
+            return $testUserNonComposite->toJson();
+        })->middleware(SubstituteBindings::class);
+    }
+
     /** @test */
     public function validateSingleModelLookup()
     {
@@ -80,5 +90,23 @@ class NonCompositeFindTest extends CompositeKeyBaseUnit
         $this->assertEquals(2, $models->get(1)->user_id);
         $this->assertEquals(100, $models->get(1)->organization_id);
         $this->assertEquals('Bar', $models->get(1)->name);
+    }
+
+    /** @test
+     */
+    public function validateMissingNonCompositeModelRouteBinding()
+    {
+        $data = $this->call('GET', 'non-composite-users/99');
+        $this->assertEquals(404, $data->getStatusCode());
+    }
+
+    /** @test
+     * @depends  validateSingleModelLookup
+     */
+    public function validateNonCompositeModelRouteBinding(TestUserNonComposite $model)
+    {
+        $data = $this->call('GET', 'non-composite-users/1');
+        $this->assertEquals(200, $data->getStatusCode());
+        $this->assertEquals($model->toJson(), $data->getContent());
     }
 }

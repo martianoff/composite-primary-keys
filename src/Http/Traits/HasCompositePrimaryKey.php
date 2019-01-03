@@ -181,7 +181,7 @@ trait HasCompositePrimaryKey
                             }
 
                             if ($inverse) {
-                                $query->whereNot($key, $compositeKey[$key]);
+                                $query->orWhere($key, '!=', $compositeKey[$key]);
                             } else {
                                 $query->where($key, $compositeKey[$key]);
                             }
