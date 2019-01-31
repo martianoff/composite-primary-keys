@@ -16,11 +16,37 @@ class TestUser extends Model
     ];
 
     protected $fillable = [
-        'name', 'counter', 'organization_id',
+        'name', 'counter', 'organization_id', 'referred_by_user_id', 'referred_by_organization_id'
     ];
 
     public function organization()
     {
-        return $this->belongsTo('TestOrganization', 'organization_id', 'organization_id');
+        return $this->belongsTo(TestOrganization::class, 'organization_id', 'organization_id');
+    }
+
+    public function referrer()
+    {
+        return $this->belongsTo(TestUser::class, [
+            'referred_by_user_id',
+            'referred_by_organization_id'
+        ], [
+            'user_id',
+            'organization_id',
+        ]);
+    }
+
+    public function wrongConfiguredReferrer()
+    {
+        return $this->belongsTo(TestUser::class, [
+            'referred_by_user_id',
+            'referred_by_organization_id'
+        ], [
+            'user_id',
+        ]);
+    }
+
+    public function automaticReferrer()
+    {
+        return $this->belongsTo(TestUser::class);
     }
 }

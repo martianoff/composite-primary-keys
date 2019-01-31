@@ -14,6 +14,6 @@ class TestOrganization extends Model
 
     public function users()
     {
-        return $this->hasMany('TestUser', 'user_id', 'user_id');
+        return $this->hasMany(TestUser::class, 'organization_id', 'organization_id');
     }
 }

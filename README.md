@@ -115,3 +115,40 @@ Simply add \MaksimM\CompositePrimaryKeys\Http\Traits\HasCompositePrimaryKey trai
     ```json
     {"user_id":"D9798CDF31C02D86B8B81CC119D94836","organization_id":"100","name":"Foo","user_id___organization_id":"D9798CDF31C02D86B8B81CC119D94836___100"}
     ```
+
+- relations (only belongsTo relation is supported in this version)
+
+  ```php
+  class TestUser extends Model
+  {
+      use \MaksimM\CompositePrimaryKeys\Http\Traits\HasCompositePrimaryKey;
+  
+      protected $table = 'users';
+  
+      protected $primaryKey = [
+          'user_id',
+          'organization_id',
+      ];
+  
+      public function referrer()
+      {
+          return $this->belongsTo(TestUser::class, [
+              'referred_by_user_id',
+              'referred_by_organization_id'
+          ], [
+              'user_id',
+              'organization_id',
+          ]);
+      }
+  }
+
+  $referrer_user = $testUser->referrer()->first();
+  ```
+  
+  will call
+  
+  ```sql
+  select * from "users" where (("user_id" = ? and "organization_id" = ?)) limit 1
+  ```
+  
+  with bindings [ $testUser->referred_by_user_id, $testUser->referred_by_organization_id ] 

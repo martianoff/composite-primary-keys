@@ -1,6 +1,6 @@
 {
   "name": "maksimru/composite-primary-keys",
-  "description": "Allows to use composite primary keys with optional binary primary columns",
+  "description": "Most advanced composite primary keys package with support of: binary columns, queueable, implicit route binding, relations",
   "keywords": [
     "eloquent",
     "composite",
@@ -17,6 +17,7 @@
   ],
   "require": {
     "php": ">=7",
+    "ext-json": "*",
     "illuminate/cache": "^5.5",
     "illuminate/contracts": "^5.5",
     "illuminate/queue": "^5.5",

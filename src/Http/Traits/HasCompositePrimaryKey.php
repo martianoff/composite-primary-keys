@@ -7,12 +7,11 @@ use Illuminate\Support\Arr;
 use MaksimM\CompositePrimaryKeys\Eloquent\CompositeKeyQueryBuilder;
 use MaksimM\CompositePrimaryKeys\Exceptions\MissingPrimaryKeyValueException;
 use MaksimM\CompositePrimaryKeys\Exceptions\WrongKeyException;
+use MaksimM\CompositePrimaryKeys\Scopes\CompositeKeyScope;
 
 trait HasCompositePrimaryKey
 {
-    use PrimaryKeyInformation;
-
-    protected $magicKeyDelimiter = '___';
+    use NormalizedKeysParser, PrimaryKeyInformation, CompositeRelationships;
 
     /**
      * Destroy the models for the given IDs.
@@ -69,33 +68,6 @@ trait HasCompositePrimaryKey
     public function getRawKeyName()
     {
         return $this->hasCompositeIndex() ? $this->primaryKey : [$this->primaryKey];
-    }
-
-    /**
-     * Get normalized key.
-     *
-     * @return string
-     */
-    private function getNormalizedKeyName()
-    {
-        return implode($this->magicKeyDelimiter, array_merge($this->getRawKeyName()));
-    }
-
-    /**
-     * Get normalized key.
-     *
-     * @return string
-     */
-    private function getNormalizedKey()
-    {
-        $rawKeys = $this->getRawKey();
-        foreach ($rawKeys as $key => $value) {
-            if (in_array($key, $this->getBinaryColumns())) {
-                $rawKeys[$key] = strtoupper(bin2hex($value));
-            }
-        }
-
-        return implode($this->magicKeyDelimiter, $rawKeys);
     }
 
     /**
@@ -161,40 +133,9 @@ trait HasCompositePrimaryKey
         }
 
         if ($this->hasCompositeIndex()) {
-            $query->where(function ($query) use ($keys, $ids, $inverse) {
-                foreach ($ids as $compositeKey) {
-                    // try to parse normalized key
-                    if (!is_array($compositeKey)) {
-                        $compositeKey = $this->parseNormalizedKey($compositeKey);
-                    }
 
-                    $queryWriter = function ($query) use ($keys, $compositeKey, $inverse) {
-                        /*
-                         * @var \Illuminate\Database\Query\Builder $query
-                         */
-                        foreach ($keys as $key) {
-                            if (!isset($compositeKey[$key])) {
-                                throw new MissingPrimaryKeyValueException(
-                                    $key,
-                                    'Missing value for key '.$key.' in record '.json_encode($compositeKey)
-                                );
-                            }
+            (new CompositeKeyScope($keys, $ids, $inverse, $this->getBinaryColumns()))->apply($query);
 
-                            if ($inverse) {
-                                $query->orWhere($key, '!=', $compositeKey[$key]);
-                            } else {
-                                $query->where($key, $compositeKey[$key]);
-                            }
-                        }
-                    };
-
-                    if ($inverse) {
-                        $query->where($queryWriter);
-                    } else {
-                        $query->orWhere($queryWriter);
-                    }
-                }
-            });
         } else {
             if ($inverse) {
                 $query->whereNotIn($this->qualifyColumn($keys[0]), $ids);
@@ -204,43 +145,7 @@ trait HasCompositePrimaryKey
         }
     }
 
-    /**
-     * Get key-value array from normalized key.
-     *
-     * @param $normalizedKey
-     *
-     * @throws WrongKeyException
-     *
-     * @return array
-     */
-    public function parseNormalizedKey($normalizedKey)
-    {
-        $keys = [];
-        $parsedKeys = explode($this->magicKeyDelimiter, $normalizedKey);
-        $me = new self();
-        foreach ($me->getRawKeyName() as $index => $key) {
-            $keys[$key] = in_array($key, $this->getBinaryColumns()) ? $this->recoverBinaryKey($key, $parsedKeys[$index]) : $parsedKeys[$index];
-        }
 
-        return $keys;
-    }
-
-    /**
-     * @param $key
-     * @param $hexValue
-     *
-     * @throws WrongKeyException
-     *
-     * @return bool|string
-     */
-    private function recoverBinaryKey($key, $hexValue)
-    {
-        try {
-            return hex2bin($hexValue);
-        } catch (\Exception $exception) {
-            throw new WrongKeyException("$key has invalid hex value");
-        }
-    }
 
     /**
      * Get a new query to restore one or more models by their queueable IDs.
@@ -278,7 +183,7 @@ trait HasCompositePrimaryKey
         return new CompositeKeyQueryBuilder($query);
     }
 
-    protected function getBinaryColumns()
+    public function getBinaryColumns()
     {
         return $this->binaryColumns ?? [];
     }

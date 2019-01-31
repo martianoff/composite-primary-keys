@@ -31,6 +31,10 @@ class TestUserSeeder extends Seeder
                 ->first()
                 ->organization_id,
             'name' => 'Foo Bar',
+            'referred_by_user_id' => 1,
+            'referred_by_organization_id' => \MaksimM\CompositePrimaryKeys\Tests\Stubs\TestOrganization::whereName('Foo')
+                ->first()
+                ->organization_id
         ]);
     }
 }

@@ -12,9 +12,13 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
+            //primary
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('organization_id');
             $table->primary(['user_id', 'organization_id']);
+            //related user
+            $table->unsignedInteger('referred_by_user_id')->nullable();
+            $table->unsignedInteger('referred_by_organization_id')->nullable();
             $table->string('name')->unique();
             $table->unsignedInteger('counter')->default(0);
             $table->timestamps();
