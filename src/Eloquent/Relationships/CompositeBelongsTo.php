@@ -9,14 +9,14 @@ use MaksimM\CompositePrimaryKeys\Scopes\CompositeKeyScope;
 
 class CompositeBelongsTo extends BelongsTo
 {
-
     protected $magicKeyDelimiter = '___';
 
     /**
      * Set the base constraints on the relation query.
      *
-     * @return void
      * @throws WrongRelationConfigurationException
+     *
+     * @return void
      */
     public function addConstraints()
     {
@@ -29,18 +29,20 @@ class CompositeBelongsTo extends BelongsTo
             $ownerKeys = $this->getOwnerKeys();
             $foreignKeys = $this->getForeignKeys();
 
-            if(count($ownerKeys)!=count($foreignKeys))
+            if (count($ownerKeys) != count($foreignKeys)) {
                 throw new WrongRelationConfigurationException();
-
-            foreach ($ownerKeys as $keyIndex => $key)
+            }
+            foreach ($ownerKeys as $keyIndex => $key) {
                 $this->query->where($table.'.'.$key, '=', $this->child->{$foreignKeys[$keyIndex]});
+            }
         }
     }
 
     /**
      * Set the constraints for an eager load of the relation.
      *
-     * @param  array  $models
+     * @param array $models
+     *
      * @return void
      */
     public function addEagerConstraints(array $models)
@@ -50,29 +52,34 @@ class CompositeBelongsTo extends BelongsTo
         // We'll grab the primary key name of the related models since it could be set to
         // a non-standard name and not "id". We will then construct the constraint for
         // our eagerly loading query so it returns the proper models from execution.
-        (new CompositeKeyScope(array_map(function($keyName){
+        (new CompositeKeyScope(array_map(function ($keyName) {
             return  $this->related->getTable().'.'.$keyName;
-        }, $ownerKeys), $this->getEagerModelKeys($models), false, method_exists($this->related,'getBinaryColumns') ? $this->related->getBinaryColumns() : []))->apply($this->query);
+        }, $ownerKeys), $this->getEagerModelKeys($models), false, method_exists($this->related, 'getBinaryColumns') ? $this->related->getBinaryColumns() : []))->apply($this->query);
     }
 
     public function getOwnerKeys()
     {
-        if(method_exists($this->parent, 'hasCompositeIndex') && $this->parent->hasCompositeIndex() && !is_array($this->ownerKey) && strpos($this->ownerKey,$this->magicKeyDelimiter) !== false)
+        if (method_exists($this->parent, 'hasCompositeIndex') && $this->parent->hasCompositeIndex() && !is_array($this->ownerKey) && strpos($this->ownerKey, $this->magicKeyDelimiter) !== false) {
             $this->ownerKey = explode($this->magicKeyDelimiter, $this->ownerKey);
+        }
+
         return !is_array($this->ownerKey) ? [$this->ownerKey] : $this->ownerKey;
     }
 
     public function getForeignKeys()
     {
-        if(method_exists($this->related, 'hasCompositeIndex') && $this->related->hasCompositeIndex() && !is_array($this->foreignKey) && strpos($this->foreignKey,$this->magicKeyDelimiter) !== false)
+        if (method_exists($this->related, 'hasCompositeIndex') && $this->related->hasCompositeIndex() && !is_array($this->foreignKey) && strpos($this->foreignKey, $this->magicKeyDelimiter) !== false) {
             $this->foreignKey = explode($this->magicKeyDelimiter, $this->foreignKey);
+        }
+
         return !is_array($this->foreignKey) ? [$this->foreignKey] : $this->foreignKey;
     }
 
     /**
      * Gather the keys from an array of related models.
      *
-     * @param  array  $models
+     * @param array $models
+     *
      * @return array
      */
     protected function getEagerModelKeys(array $models)
@@ -95,7 +102,7 @@ class CompositeBelongsTo extends BelongsTo
             $keys[] = $compositeKey;
         }
 
-        if(count($foreignKeys) == 1) {
+        if (count($foreignKeys) == 1) {
             // If there are no keys that were not null we will just return an array with null
             // so this query wont fail plus returns zero results, which should be what the
             // developer expects to happen in this situation. Otherwise we'll sort them.
@@ -106,17 +113,18 @@ class CompositeBelongsTo extends BelongsTo
             sort($keys);
 
             return array_values(array_unique($keys));
-        }
-        else
+        } else {
             return $keys;
+        }
     }
 
     /**
      * Match the eagerly loaded results to their parents.
      *
-     * @param  array   $models
-     * @param  \Illuminate\Database\Eloquent\Collection  $results
-     * @param  string  $relation
+     * @param array                                    $models
+     * @param \Illuminate\Database\Eloquent\Collection $results
+     * @param string                                   $relation
+     *
      * @return array
      */
     public function match(array $models, Collection $results, $relation)
@@ -131,7 +139,7 @@ class CompositeBelongsTo extends BelongsTo
         $dictionary = [];
 
         foreach ($results as $result) {
-            $dictionary[implode($this->magicKeyDelimiter,array_map(function($owner) use ($result) {
+            $dictionary[implode($this->magicKeyDelimiter, array_map(function ($owner) use ($result) {
                 return $result->getAttribute($owner);
             }, $ownerKeys))] = $result;
         }
@@ -140,7 +148,7 @@ class CompositeBelongsTo extends BelongsTo
         // and match back onto their children using these keys of the dictionary and
         // the primary key of the children to map them onto the correct instances.
         foreach ($models as $model) {
-            $foreignKey = implode($this->magicKeyDelimiter,array_map(function($foreign) use ($model) {
+            $foreignKey = implode($this->magicKeyDelimiter, array_map(function ($foreign) use ($model) {
                 return $model->{$foreign};
             }, $foreignKeys));
             if (isset($dictionary[$foreignKey])) {
@@ -150,5 +158,4 @@ class CompositeBelongsTo extends BelongsTo
 
         return $models;
     }
-
 }

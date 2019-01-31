@@ -2,7 +2,6 @@
 
 namespace MaksimM\CompositePrimaryKeys\Http\Traits;
 
-
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -10,12 +9,12 @@ use MaksimM\CompositePrimaryKeys\Eloquent\Relationships\CompositeBelongsTo;
 
 trait CompositeRelationships
 {
-
     /**
      * @param      $related
      * @param null $foreignKey
      * @param null $ownerKey
      * @param null $relation
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function belongsTo($related, $foreignKey = null, $ownerKey = null, $relation = null)
@@ -36,7 +35,7 @@ trait CompositeRelationships
         // foreign key name by using the name of the relationship function, which
         // when combined with an "_id" should conventionally match the columns.
         if (is_null($foreignKey)) {
-            $foreignKey = is_array($instance->getKeyName()) ? array_map(function($key) use ($relation) {
+            $foreignKey = is_array($instance->getKeyName()) ? array_map(function ($key) use ($relation) {
                 return Str::snake($relation).'_'.$key;
             }, $instance->getKeyName()) : Str::snake($relation).'_'.$instance->getKeyName();
         }
@@ -54,16 +53,16 @@ trait CompositeRelationships
     /**
      * Instantiate a new BelongsTo relationship.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  \Illuminate\Database\Eloquent\Model  $child
-     * @param  string  $foreignKey
-     * @param  string  $ownerKey
-     * @param  string  $relation
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param \Illuminate\Database\Eloquent\Model   $child
+     * @param string                                $foreignKey
+     * @param string                                $ownerKey
+     * @param string                                $relation
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     protected function newBelongsTo(Builder $query, Model $child, $foreignKey, $ownerKey, $relation)
     {
         return new CompositeBelongsTo($query, $child, $foreignKey, $ownerKey, $relation);
     }
-
 }

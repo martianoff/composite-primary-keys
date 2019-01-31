@@ -133,9 +133,7 @@ trait HasCompositePrimaryKey
         }
 
         if ($this->hasCompositeIndex()) {
-
             (new CompositeKeyScope($keys, $ids, $inverse, $this->getBinaryColumns()))->apply($query);
-
         } else {
             if ($inverse) {
                 $query->whereNotIn($this->qualifyColumn($keys[0]), $ids);
@@ -144,8 +142,6 @@ trait HasCompositePrimaryKey
             }
         }
     }
-
-
 
     /**
      * Get a new query to restore one or more models by their queueable IDs.

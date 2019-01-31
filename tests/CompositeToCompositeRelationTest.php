@@ -23,7 +23,6 @@ class CompositeToCompositeRelationTest extends CompositeKeyBaseUnit
         $this->assertNull($referrer_user);
     }
 
-
     /** @test */
     public function validateBelongsToRelation()
     {
@@ -55,8 +54,7 @@ class CompositeToCompositeRelationTest extends CompositeKeyBaseUnit
 
         try {
             $user->wrongConfiguredReferrer()->first();
-        }
-        catch (\Exception $exception) {
+        } catch (\Exception $exception) {
             $this->assertInstanceOf(WrongRelationConfigurationException::class, $exception);
         }
     }
@@ -144,7 +142,7 @@ class CompositeToCompositeRelationTest extends CompositeKeyBaseUnit
         ]);
 
         $user->referrer->update([
-            'counter' => 3333
+            'counter' => 3333,
         ]);
 
         $this->assertEquals(3333, $user->referrer->counter);
@@ -162,10 +160,9 @@ class CompositeToCompositeRelationTest extends CompositeKeyBaseUnit
         ]);
 
         $user->referrer()->update([
-            'counter' => 3333
+            'counter' => 3333,
         ]);
 
         $this->assertEquals(3333, $user->referrer()->first()->counter);
     }
-
 }
