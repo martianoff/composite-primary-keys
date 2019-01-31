@@ -29,6 +29,7 @@ class CompositeKeyScope
     {
         return $this->binary_columns;
     }
+
     /**
      * Apply a query scope.
      *

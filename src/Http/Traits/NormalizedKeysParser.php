@@ -2,13 +2,11 @@
 
 namespace MaksimM\CompositePrimaryKeys\Http\Traits;
 
-
 use Illuminate\Database\Eloquent\Model;
 use MaksimM\CompositePrimaryKeys\Exceptions\WrongKeyException;
 
 trait NormalizedKeysParser
 {
-
     protected $magicKeyDelimiter = '___';
 
     /**

@@ -72,5 +72,4 @@ class NonCompositeToCompositeRelationTest extends CompositeKeyBaseUnit
 
         $this->assertInstanceOf(TestOrganization::class, $referrer_user);
     }
-
 }

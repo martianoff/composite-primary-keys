@@ -16,7 +16,7 @@ class TestUser extends Model
     ];
 
     protected $fillable = [
-        'name', 'counter', 'organization_id', 'referred_by_user_id', 'referred_by_organization_id'
+        'name', 'counter', 'organization_id', 'referred_by_user_id', 'referred_by_organization_id',
     ];
 
     public function organization()
@@ -26,9 +26,9 @@ class TestUser extends Model
 
     public function referrer()
     {
-        return $this->belongsTo(TestUser::class, [
+        return $this->belongsTo(self::class, [
             'referred_by_user_id',
-            'referred_by_organization_id'
+            'referred_by_organization_id',
         ], [
             'user_id',
             'organization_id',
@@ -37,9 +37,9 @@ class TestUser extends Model
 
     public function wrongConfiguredReferrer()
     {
-        return $this->belongsTo(TestUser::class, [
+        return $this->belongsTo(self::class, [
             'referred_by_user_id',
-            'referred_by_organization_id'
+            'referred_by_organization_id',
         ], [
             'user_id',
         ]);
@@ -47,6 +47,6 @@ class TestUser extends Model
 
     public function automaticReferrer()
     {
-        return $this->belongsTo(TestUser::class);
+        return $this->belongsTo(self::class);
     }
 }
