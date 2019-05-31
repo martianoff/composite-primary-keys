@@ -2,6 +2,7 @@
 
 namespace MaksimM\CompositePrimaryKeys\Scopes;
 
+use Illuminate\Database\Eloquent\Builder;
 use MaksimM\CompositePrimaryKeys\Exceptions\MissingPrimaryKeyValueException;
 use MaksimM\CompositePrimaryKeys\Http\Traits\NormalizedKeysParser;
 
@@ -33,7 +34,7 @@ class CompositeKeyScope
     /**
      * Apply a query scope.
      *
-     * @param \Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder $query
+     * @param \Illuminate\Database\Query\Builder|Builder $query
      *
      * @return mixed
      */
@@ -59,9 +60,9 @@ class CompositeKeyScope
                         }
 
                         if ($this->inverse) {
-                            $query->orWhere($key, '!=', $compositeKey[$key]);
+                            $query->orWhere($query->getModel()->qualifyColumn($key), '!=', $compositeKey[$key]);
                         } else {
-                            $query->where($key, $compositeKey[$key]);
+                            $query->where($query->getModel()->qualifyColumn($key), $compositeKey[$key]);
                         }
                     }
                 };
