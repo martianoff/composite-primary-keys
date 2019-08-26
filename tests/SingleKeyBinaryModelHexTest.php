@@ -67,7 +67,6 @@ class SingleKeyBinaryModelHexTest extends CompositeKeyBaseUnit
         $this->assertNotNull($model->toArray()['hex_users']);
         $this->assertNotNull($model->users);
         $this->assertNotNull($model->hex_users);
-        var_dump($model->toArray());
     }
 
     /** @test
