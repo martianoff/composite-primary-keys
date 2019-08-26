@@ -12,9 +12,7 @@ use MaksimM\CompositePrimaryKeys\Scopes\CompositeKeyScope;
 
 trait HasCompositePrimaryKey
 {
-    use NormalizedKeysParser, PrimaryKeyInformation, CompositeRelationships;
-
-    protected $hexBinaryColumns = false;
+    use NormalizedKeysParser, PrimaryKeyInformation, CompositeRelationships, OptionalBinaryTransformation;
 
     /**
      * Automatically generate unique binary id.
@@ -205,11 +203,6 @@ trait HasCompositePrimaryKey
         return new CompositeKeyQueryBuilder($query);
     }
 
-    public function hexBinaryColumns()
-    {
-        return $this->hexBinaryColumns;
-    }
-
     public function getBinaryColumns()
     {
         return $this->binaryColumns ?? [];
@@ -292,47 +285,5 @@ trait HasCompositePrimaryKey
         }
     }
 
-    private function shouldProcessBinaryAttribute($key)
-    {
-        return $this->hexBinaryColumns() && in_array($key, $this->getBinaryColumns());
-    }
 
-    public function hasGetMutator($key)
-    {
-        if ($this->shouldProcessBinaryAttribute($key) && isset($this->{$key})) {
-            return true;
-        }
-
-        return parent::hasGetMutator($key);
-    }
-
-    public function mutateAttribute($key, $value)
-    {
-        if ($this->shouldProcessBinaryAttribute($key)) {
-            return strtoupper(bin2hex($value));
-        }
-
-        return parent::mutateAttribute($key, $value);
-    }
-
-    public function hasSetMutator($key)
-    {
-        if ($this->shouldProcessBinaryAttribute($key)) {
-            return true;
-        }
-
-        return parent::hasSetMutator($key);
-    }
-
-    public function setMutatedAttributeValue($key, $value)
-    {
-        if ($this->shouldProcessBinaryAttribute($key)) {
-            $value = hex2bin($value);
-            $this->attributes[$key] = $value;
-
-            return $value;
-        }
-
-        return parent::setMutatedAttributeValue($key, $value);
-    }
 }
