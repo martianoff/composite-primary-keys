@@ -38,7 +38,7 @@ class SingleKeyBinaryModelHexTest extends CompositeKeyBaseUnit
     public function validateSingleModelUpdate(TestBinaryRoleHex $model)
     {
         $model->update([
-            'name' => 'FooBar'
+            'name' => 'FooBar',
         ]);
         $model->refresh();
         $this->assertEquals('FooBar', $model->name);
@@ -49,7 +49,7 @@ class SingleKeyBinaryModelHexTest extends CompositeKeyBaseUnit
      */
     public function validateEagerRelations(TestBinaryRoleHex $model)
     {
-        $model->loadMissing(['users','hex_users']);
+        $model->loadMissing(['users', 'hex_users']);
         $this->assertNotNull($model->toArray()['users']);
         $this->assertNotNull($model->toArray()['hex_users']);
         $this->assertNotNull($model->users);
@@ -65,5 +65,4 @@ class SingleKeyBinaryModelHexTest extends CompositeKeyBaseUnit
         $this->assertNotNull($model->users);
         $this->assertNotNull($model->hex_users);
     }
-
 }

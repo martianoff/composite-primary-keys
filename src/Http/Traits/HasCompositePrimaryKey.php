@@ -139,10 +139,11 @@ trait HasCompositePrimaryKey
             (new CompositeKeyScope($keys, $ids, $inverse, $this->getBinaryColumns()))->apply($query);
         } else {
             //remap hex ID to binary ID even if index is not composite
-            if($this->shouldProcessBinaryAttribute($keys[0]))
-                $ids = array_map(function($hex){
+            if ($this->shouldProcessBinaryAttribute($keys[0])) {
+                $ids = array_map(function ($hex) {
                     return hex2bin($hex);
                 }, $ids);
+            }
             if ($inverse) {
                 $query->whereNotIn($this->qualifyColumn($keys[0]), $ids);
             } else {
@@ -156,10 +157,10 @@ trait HasCompositePrimaryKey
      *
      * @param array|int $ids
      *
-     * @return Builder
      *@throws WrongKeyException
-     *
      * @throws MissingPrimaryKeyValueException
+     *
+     * @return Builder
      */
     public function newQueryForRestoration($ids)
     {
@@ -214,9 +215,9 @@ trait HasCompositePrimaryKey
      *
      * @param Builder $query
      *
-     * @return Builder
      *@throws MissingPrimaryKeyValueException
      *
+     * @return Builder
      */
     protected function setKeysForSaveQuery(Builder $query)
     {
@@ -273,8 +274,9 @@ trait HasCompositePrimaryKey
             return $this->where($this->getRouteKeyName(), $value)->first();
         }
     }
-    
-    private function shouldProcessBinaryAttribute($key){
+
+    private function shouldProcessBinaryAttribute($key)
+    {
         return $this->hexBinaryColumns() && in_array($key, $this->getBinaryColumns());
     }
 
@@ -310,6 +312,7 @@ trait HasCompositePrimaryKey
         if ($this->shouldProcessBinaryAttribute($key)) {
             $value = hex2bin($value);
             $this->attributes[$key] = $value;
+
             return $value;
         }
 

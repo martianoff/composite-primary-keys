@@ -50,7 +50,7 @@ trait NormalizedKeysParser
         $rawKeys = $this->getRawKey();
 
         //do not normalize single key because we couldn't detect its type
-        if(count($rawKeys) > 1) {
+        if (count($rawKeys) > 1) {
             foreach ($rawKeys as $key => $value) {
                 if (in_array($key, $this->getBinaryColumns()) && !$this->hexBinaryColumns()) {
                     $rawKeys[$key] = strtoupper(bin2hex($value));

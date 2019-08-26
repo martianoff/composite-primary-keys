@@ -19,7 +19,7 @@ class TestBinaryUserSeeder extends Seeder
             'organization_id' => TestOrganization::whereName('Foo')
                 ->first()
                 ->organization_id,
-            'name' => 'Foo',
+            'name'    => 'Foo',
             'role_id' => TestRole::first()->getKey(),
         ]);
         TestBinaryUser::create([
@@ -27,8 +27,8 @@ class TestBinaryUserSeeder extends Seeder
             'organization_id' => TestOrganization::whereName('Bar')
                 ->first()
                 ->organization_id,
-            'name' => 'Bar',
-            'role_id' => TestRole::first()->getKey(),
+            'name'           => 'Bar',
+            'role_id'        => TestRole::first()->getKey(),
             'binary_role_id' => TestBinaryRole::first()->getKey(),
         ]);
         TestBinaryUserHex::create([
@@ -36,8 +36,8 @@ class TestBinaryUserSeeder extends Seeder
             'organization_id' => TestOrganization::whereName('Bar')
                 ->first()
                 ->organization_id,
-            'name' => 'Hex',
-            'role_id' => TestRole::first()->getKey(),
+            'name'           => 'Hex',
+            'role_id'        => TestRole::first()->getKey(),
             'binary_role_id' => TestBinaryRole::first()->getKey(),
         ]);
     }

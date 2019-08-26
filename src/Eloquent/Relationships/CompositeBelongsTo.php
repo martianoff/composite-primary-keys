@@ -46,7 +46,7 @@ class CompositeBelongsTo extends BelongsTo
     public function getResults()
     {
         $foreignKey = !is_array($this->foreignKey) ? [$this->foreignKey] : $this->foreignKey;
-        foreach($foreignKey as $foreignKeyVal) {
+        foreach ($foreignKey as $foreignKeyVal) {
             if (is_null($this->child->{$foreignKeyVal})) {
                 return $this->getDefaultFor($this->parent);
             }
@@ -120,7 +120,6 @@ class CompositeBelongsTo extends BelongsTo
         }
 
         if (count($foreignKeys) == 1) {
-
             sort($keys);
 
             return array_values(array_unique($keys));

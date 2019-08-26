@@ -5,7 +5,6 @@ namespace MaksimM\CompositePrimaryKeys\Tests;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use MaksimM\CompositePrimaryKeys\Tests\Stubs\TestBinaryUserHex;
-use MaksimM\CompositePrimaryKeys\Tests\Stubs\TestBinaryUserMutatorsMutators;
 use MaksimM\CompositePrimaryKeys\Tests\Stubs\TestRole;
 
 class BinaryKeysTestWithMutators extends CompositeKeyBaseUnit
@@ -66,7 +65,7 @@ class BinaryKeysTestWithMutators extends CompositeKeyBaseUnit
     public function validateSingleModelUpdate(TestBinaryUserHex $model)
     {
         $model->update([
-            'name' => 'FooBar'
+            'name' => 'FooBar',
         ]);
         $model->refresh();
         $this->assertEquals('FooBar', $model->name);
