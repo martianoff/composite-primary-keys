@@ -39,6 +39,23 @@ class CompositeBelongsTo extends BelongsTo
     }
 
     /**
+     * Get the results of the relationship.
+     *
+     * @return mixed
+     */
+    public function getResults()
+    {
+        $foreignKey = !is_array($this->foreignKey) ? [$this->foreignKey] : $this->foreignKey;
+        foreach($foreignKey as $foreignKeyVal) {
+            if (is_null($this->child->{$foreignKeyVal})) {
+                return $this->getDefaultFor($this->parent);
+            }
+        }
+
+        return $this->query->first() ?: $this->getDefaultFor($this->parent);
+    }
+
+    /**
      * Set the constraints for an eager load of the relation.
      *
      * @param array $models
@@ -103,12 +120,6 @@ class CompositeBelongsTo extends BelongsTo
         }
 
         if (count($foreignKeys) == 1) {
-            // If there are no keys that were not null we will just return an array with null
-            // so this query wont fail plus returns zero results, which should be what the
-            // developer expects to happen in this situation. Otherwise we'll sort them.
-            if (count($keys) === 0) {
-                return [null];
-            }
 
             sort($keys);
 
@@ -121,9 +132,9 @@ class CompositeBelongsTo extends BelongsTo
     /**
      * Match the eagerly loaded results to their parents.
      *
-     * @param array                                    $models
-     * @param \Illuminate\Database\Eloquent\Collection $results
-     * @param string                                   $relation
+     * @param array      $models
+     * @param Collection $results
+     * @param string     $relation
      *
      * @return array
      */

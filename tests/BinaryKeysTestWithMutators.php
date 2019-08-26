@@ -4,31 +4,48 @@ namespace MaksimM\CompositePrimaryKeys\Tests;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Routing\Middleware\SubstituteBindings;
-use MaksimM\CompositePrimaryKeys\Tests\Stubs\TestBinaryUser;
+use MaksimM\CompositePrimaryKeys\Tests\Stubs\TestBinaryUserHex;
+use MaksimM\CompositePrimaryKeys\Tests\Stubs\TestBinaryUserMutatorsMutators;
 use MaksimM\CompositePrimaryKeys\Tests\Stubs\TestRole;
 
-class BinaryKeysTest extends CompositeKeyBaseUnit
+class BinaryKeysTestWithMutators extends CompositeKeyBaseUnit
 {
     protected function getEnvironmentSetUp($app)
     {
         $app['config']->set('database.default', 'testing');
-        $app['router']->get('binary-users/{binaryUser}', function (TestBinaryUser $binaryUser) {
+        $app['router']->get('binary-users/{binaryUser}', function (TestBinaryUserHex $binaryUser) {
             return $binaryUser->toJson();
         })->middleware(SubstituteBindings::class);
+    }
+
+    /** @test */
+    public function validateHexInputModelLookup()
+    {
+        /**
+         * @var TestBinaryUserHex
+         */
+        $model = TestBinaryUserHex::find([
+            'user_id'         => md5(20002),
+            'organization_id' => 101,
+        ]);
+        $this->assertNotNull($model);
+        $this->assertInstanceOf(TestBinaryUserHex::class, $model);
+
+        return $model;
     }
 
     /** @test */
     public function validateSingleModelLookup()
     {
         /**
-         * @var TestBinaryUser
+         * @var TestBinaryUserHex
          */
-        $model = TestBinaryUser::find([
-            'user_id'         => md5(20000, true),
+        $model = TestBinaryUserHex::find([
+            'user_id'         => md5(20000),
             'organization_id' => 100,
         ]);
         $this->assertNotNull($model);
-        $this->assertInstanceOf(TestBinaryUser::class, $model);
+        $this->assertInstanceOf(TestBinaryUserHex::class, $model);
 
         return $model;
     }
@@ -36,9 +53,9 @@ class BinaryKeysTest extends CompositeKeyBaseUnit
     /** @test
      *  @depends  validateSingleModelLookup
      */
-    public function validateSingleModelLookupModel(TestBinaryUser $model)
+    public function validateSingleModelLookupModel(TestBinaryUserHex $model)
     {
-        $this->assertEquals(md5(20000, true), $model->user_id);
+        $this->assertEquals(strtoupper(md5(20000)), $model->user_id);
         $this->assertEquals(100, $model->organization_id);
         $this->assertEquals('Foo', $model->name);
     }
@@ -46,7 +63,7 @@ class BinaryKeysTest extends CompositeKeyBaseUnit
     /** @test
      *  @depends  validateSingleModelLookup
      */
-    public function validateSingleModelUpdate(TestBinaryUser $model)
+    public function validateSingleModelUpdate(TestBinaryUserHex $model)
     {
         $model->update([
             'name' => 'FooBar'
@@ -59,13 +76,13 @@ class BinaryKeysTest extends CompositeKeyBaseUnit
     public function validateMultipleModelLookup()
     {
         /**
-         * @var Collection|TestBinaryUser[]
+         * @var Collection|TestBinaryUserHex[]
          */
-        $models = TestBinaryUser::find([[
-            'user_id'         => md5(20000, true),
+        $models = TestBinaryUserHex::find([[
+            'user_id'         => md5(20000),
             'organization_id' => 100,
         ], [
-            'user_id'         => md5(20001, true),
+            'user_id'         => md5(20001),
             'organization_id' => 101,
         ]]);
         $this->assertNotNull($models);
@@ -79,10 +96,10 @@ class BinaryKeysTest extends CompositeKeyBaseUnit
      */
     public function validateMultipleModelLookupModels(Collection $models)
     {
-        $this->assertEquals(md5(20000, true), $models->get(0)->user_id);
+        $this->assertEquals(strtoupper(md5(20000)), $models->get(0)->user_id);
         $this->assertEquals(100, $models->get(0)->organization_id);
         $this->assertEquals('Foo', $models->get(0)->name);
-        $this->assertEquals(md5(20001, true), $models->get(1)->user_id);
+        $this->assertEquals(strtoupper(md5(20001)), $models->get(1)->user_id);
         $this->assertEquals(101, $models->get(1)->organization_id);
         $this->assertEquals('Bar', $models->get(1)->name);
     }
@@ -90,7 +107,7 @@ class BinaryKeysTest extends CompositeKeyBaseUnit
     /** @test
      *  @depends  validateSingleModelLookup
      */
-    public function validateBinaryValueRendering(TestBinaryUser $model)
+    public function validateBinaryValueRendering(TestBinaryUserHex $model)
     {
         $this->assertContains(strtoupper(md5(20000)), $model->toJson());
     }
@@ -117,7 +134,7 @@ class BinaryKeysTest extends CompositeKeyBaseUnit
     /** @test
      *  @depends  validateSingleModelLookup
      */
-    public function validateBinaryModelRouteBinding(TestBinaryUser $model)
+    public function validateBinaryModelRouteBinding(TestBinaryUserHex $model)
     {
         $model->refresh();
         $data = $this->call('GET', 'binary-users/'.$model->getKey());
@@ -128,7 +145,7 @@ class BinaryKeysTest extends CompositeKeyBaseUnit
     /** @test
      *  @depends  validateSingleModelLookup
      */
-    public function validateEagerRelations(TestBinaryUser $model)
+    public function validateEagerRelations(TestBinaryUserHex $model)
     {
         $model->loadMissing(['role']);
         $this->assertNotNull($model->toArray()['role']);
@@ -139,8 +156,8 @@ class BinaryKeysTest extends CompositeKeyBaseUnit
      */
     public function validateLazyEagerRelations()
     {
-        $model = TestBinaryUser::find([
-            'user_id'         => md5(20000, true),
+        $model = TestBinaryUserHex::find([
+            'user_id'         => md5(20000),
             'organization_id' => 100,
         ]);
         $this->assertNotNull($model->role);

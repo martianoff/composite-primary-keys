@@ -1,6 +1,11 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use MaksimM\CompositePrimaryKeys\Tests\Stubs\TestBinaryRole;
+use MaksimM\CompositePrimaryKeys\Tests\Stubs\TestBinaryUser;
+use MaksimM\CompositePrimaryKeys\Tests\Stubs\TestBinaryUserHex;
+use MaksimM\CompositePrimaryKeys\Tests\Stubs\TestOrganization;
+use MaksimM\CompositePrimaryKeys\Tests\Stubs\TestRole;
 
 class TestBinaryUserSeeder extends Seeder
 {
@@ -9,19 +14,31 @@ class TestBinaryUserSeeder extends Seeder
      */
     public function run()
     {
-        \MaksimM\CompositePrimaryKeys\Tests\Stubs\TestBinaryUser::create([
+        TestBinaryUser::create([
             'user_id'         => md5(20000, true),
-            'organization_id' => \MaksimM\CompositePrimaryKeys\Tests\Stubs\TestOrganization::whereName('Foo')
+            'organization_id' => TestOrganization::whereName('Foo')
                 ->first()
                 ->organization_id,
             'name' => 'Foo',
+            'role_id' => TestRole::first()->getKey(),
         ]);
-        \MaksimM\CompositePrimaryKeys\Tests\Stubs\TestBinaryUser::create([
+        TestBinaryUser::create([
             'user_id'         => md5(20001, true),
-            'organization_id' => \MaksimM\CompositePrimaryKeys\Tests\Stubs\TestOrganization::whereName('Bar')
+            'organization_id' => TestOrganization::whereName('Bar')
                 ->first()
                 ->organization_id,
             'name' => 'Bar',
+            'role_id' => TestRole::first()->getKey(),
+            'binary_role_id' => TestBinaryRole::first()->getKey(),
+        ]);
+        TestBinaryUserHex::create([
+            'user_id'         => bin2hex(md5(20002, true)),
+            'organization_id' => TestOrganization::whereName('Bar')
+                ->first()
+                ->organization_id,
+            'name' => 'Hex',
+            'role_id' => TestRole::first()->getKey(),
+            'binary_role_id' => TestBinaryRole::first()->getKey(),
         ]);
     }
 }
