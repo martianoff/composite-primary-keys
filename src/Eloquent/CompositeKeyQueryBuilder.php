@@ -16,9 +16,9 @@ class CompositeKeyQueryBuilder extends Builder
      * @param mixed $id
      * @param array $columns
      *
-     * @return \Illuminate\Database\Eloquent\Model|Collection|static[]|static|null
      *@throws WrongKeyException
      *
+     * @return \Illuminate\Database\Eloquent\Model|Collection|static[]|static|null
      */
     public function find($id, $columns = ['*'])
     {
@@ -56,5 +56,4 @@ class CompositeKeyQueryBuilder extends Builder
     {
         return $this->applyIds($ids, true);
     }
-
 }

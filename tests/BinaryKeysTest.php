@@ -49,7 +49,7 @@ class BinaryKeysTest extends CompositeKeyBaseUnit
     public function validateSingleModelUpdate(TestBinaryUser $model)
     {
         $model->update([
-            'name' => 'FooBar'
+            'name' => 'FooBar',
         ]);
         $model->refresh();
         $this->assertEquals('FooBar', $model->name);

@@ -12,7 +12,7 @@ class TestBinaryRoleSeeder extends Seeder
     {
         TestBinaryRole::create([
             'role_id' => md5(1, true),
-            'name' => 'Foo',
+            'name'    => 'Foo',
         ]);
     }
 }

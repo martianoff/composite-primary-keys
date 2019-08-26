@@ -46,7 +46,7 @@ class CompositeKeyScope
                 if (!is_array($compositeKey)) {
                     $compositeKey = $this->parseNormalizedKey($compositeKey);
                 } else {
-                    if(method_exists($query->getModel(), 'hexBinaryColumns') && $query->getModel()->hexBinaryColumns()) {
+                    if (method_exists($query->getModel(), 'hexBinaryColumns') && $query->getModel()->hexBinaryColumns()) {
                         foreach ($compositeKey as $key => $value) {
                             $compositeKey[$key] = in_array($key, $this->getBinaryColumns()) ? $this->recoverBinaryKey(
                                 $key,

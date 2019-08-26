@@ -7,7 +7,6 @@ use MaksimM\CompositePrimaryKeys\Http\Traits\HasCompositePrimaryKey;
 
 class TestBinaryRole extends Model
 {
-
     use HasCompositePrimaryKey;
 
     protected $table = 'binary_roles';
@@ -24,12 +23,13 @@ class TestBinaryRole extends Model
         'name',
     ];
 
-    public function users(){
+    public function users()
+    {
         return $this->hasMany(TestBinaryUser::class, 'binary_role_id', 'role_id');
     }
 
-    public function hex_users(){
+    public function hex_users()
+    {
         return $this->hasMany(TestBinaryUserHex::class, 'binary_role_id', 'role_id');
     }
-
 }
