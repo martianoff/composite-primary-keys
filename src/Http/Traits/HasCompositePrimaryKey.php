@@ -17,6 +17,23 @@ trait HasCompositePrimaryKey
     protected $hexBinaryColumns = false;
 
     /**
+     * Automatically generate unique binary id.
+     */
+    public static function bootHasCompositePrimaryKey()
+    {
+        static::creating(function ($model) {
+            foreach ($model->getRawKeyName() as $key) {
+                if (!isset($model->{$key}) && in_array($key, $model->getBinaryColumns())) {
+                    $v = uniqid(rand(), true);
+                    $model->{$key} = $model->hexBinaryColumns() ? strtoupper(
+                        md5($v)
+                    ) : md5($v, true);
+                }
+            }
+        });
+    }
+
+    /**
      * Destroy the models for the given IDs.
      *
      * @param array|int $ids
