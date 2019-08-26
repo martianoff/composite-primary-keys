@@ -12,6 +12,19 @@ class SingleKeyBinaryModelHexTest extends CompositeKeyBaseUnit
     }
 
     /** @test */
+    public function automaticBinaryKeysOnCreation()
+    {
+        /**
+         * @var TestBinaryRoleHex
+         */
+        $model = TestBinaryRoleHex::create(['name' => 'Zoo']);
+        $this->assertNotNull($model->role_id);
+        $this->assertInstanceOf(TestBinaryRoleHex::class, $model);
+
+        return $model;
+    }
+
+    /** @test */
     public function validateSingleModelLookup()
     {
         /**

@@ -12,6 +12,19 @@ class SingleKeyBinaryModelTest extends CompositeKeyBaseUnit
     }
 
     /** @test */
+    public function automaticBinaryKeysOnCreation()
+    {
+        /**
+         * @var TestBinaryRole
+         */
+        $model = TestBinaryRole::create(['name' => 'Zoo']);
+        $this->assertNotNull($model->role_id);
+        $this->assertInstanceOf(TestBinaryRole::class, $model);
+
+        return $model;
+    }
+
+    /** @test */
     public function validateSingleModelLookup()
     {
         /**
