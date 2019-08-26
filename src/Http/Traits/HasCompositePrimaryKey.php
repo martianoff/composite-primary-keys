@@ -3,6 +3,7 @@
 namespace MaksimM\CompositePrimaryKeys\Http\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use MaksimM\CompositePrimaryKeys\Eloquent\CompositeKeyQueryBuilder;
 use MaksimM\CompositePrimaryKeys\Exceptions\MissingPrimaryKeyValueException;
@@ -12,6 +13,8 @@ use MaksimM\CompositePrimaryKeys\Scopes\CompositeKeyScope;
 trait HasCompositePrimaryKey
 {
     use NormalizedKeysParser, PrimaryKeyInformation, CompositeRelationships;
+
+    protected $hexBinaryColumns = false;
 
     /**
      * Destroy the models for the given IDs.
@@ -135,6 +138,12 @@ trait HasCompositePrimaryKey
         if ($this->hasCompositeIndex()) {
             (new CompositeKeyScope($keys, $ids, $inverse, $this->getBinaryColumns()))->apply($query);
         } else {
+            //remap hex ID to binary ID even if index is not composite
+            if ($this->shouldProcessBinaryAttribute($keys[0])) {
+                $ids = array_map(function ($hex) {
+                    return hex2bin($hex);
+                }, $ids);
+            }
             if ($inverse) {
                 $query->whereNotIn($this->qualifyColumn($keys[0]), $ids);
             } else {
@@ -148,10 +157,10 @@ trait HasCompositePrimaryKey
      *
      * @param array|int $ids
      *
+     *@throws WrongKeyException
      * @throws MissingPrimaryKeyValueException
-     * @throws WrongKeyException
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function newQueryForRestoration($ids)
     {
@@ -172,11 +181,16 @@ trait HasCompositePrimaryKey
     /**
      * @param \Illuminate\Database\Query\Builder $query
      *
-     * @return \Illuminate\Database\Eloquent\Builder|static
+     * @return Builder|static
      */
     public function newEloquentBuilder($query)
     {
         return new CompositeKeyQueryBuilder($query);
+    }
+
+    public function hexBinaryColumns()
+    {
+        return $this->hexBinaryColumns;
     }
 
     public function getBinaryColumns()
@@ -199,17 +213,17 @@ trait HasCompositePrimaryKey
     /**
      * Set the keys for a save update query.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param Builder $query
      *
-     * @throws MissingPrimaryKeyValueException
+     *@throws MissingPrimaryKeyValueException
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     protected function setKeysForSaveQuery(Builder $query)
     {
         foreach ($this->getRawKeyName() as $key) {
             if (isset($this->{$key})) {
-                $query->where($key, '=', $this->{$key});
+                $query->where($key, '=', $this->getAttributeFromArray($key));
             } else {
                 throw new MissingPrimaryKeyValueException($key, 'Missing value for key '.$key);
             }
@@ -250,7 +264,7 @@ trait HasCompositePrimaryKey
      *
      * @param mixed $value
      *
-     * @return \Illuminate\Database\Eloquent\Model|null
+     * @return Model|null
      */
     public function resolveRouteBinding($value)
     {
@@ -259,5 +273,49 @@ trait HasCompositePrimaryKey
         } else {
             return $this->where($this->getRouteKeyName(), $value)->first();
         }
+    }
+
+    private function shouldProcessBinaryAttribute($key)
+    {
+        return $this->hexBinaryColumns() && in_array($key, $this->getBinaryColumns());
+    }
+
+    public function hasGetMutator($key)
+    {
+        if ($this->shouldProcessBinaryAttribute($key) && isset($this->{$key})) {
+            return true;
+        }
+
+        return parent::hasGetMutator($key);
+    }
+
+    public function mutateAttribute($key, $value)
+    {
+        if ($this->shouldProcessBinaryAttribute($key)) {
+            return strtoupper(bin2hex($value));
+        }
+
+        return parent::mutateAttribute($key, $value);
+    }
+
+    public function hasSetMutator($key)
+    {
+        if ($this->shouldProcessBinaryAttribute($key)) {
+            return true;
+        }
+
+        return parent::hasSetMutator($key);
+    }
+
+    public function setMutatedAttributeValue($key, $value)
+    {
+        if ($this->shouldProcessBinaryAttribute($key)) {
+            $value = hex2bin($value);
+            $this->attributes[$key] = $value;
+
+            return $value;
+        }
+
+        return parent::setMutatedAttributeValue($key, $value);
     }
 }

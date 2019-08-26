@@ -9,7 +9,17 @@ Library extends Laravel's Eloquent ORM with pretty full support of composite key
 
 ## Usage
 
-No installation required
+Laravel 5.5
+
+```shell script
+composer require maksimru/composite-primary-keys ~0.14
+```
+
+Laravel 5.6+
+
+```shell script
+composer require maksimru/composite-primary-keys ~1.0
+```
 
 Simply add \MaksimM\CompositePrimaryKeys\Http\Traits\HasCompositePrimaryKey trait into required models
 
@@ -19,9 +29,7 @@ Simply add \MaksimM\CompositePrimaryKeys\Http\Traits\HasCompositePrimaryKey trai
 - increment and decrement
 - update and save query
 - binary columns
-  
-  Will convert binary column values into hex in json output
-  
+    
     ```php  
     class BinaryKeyUser extends Model
     {
@@ -30,8 +38,33 @@ Simply add \MaksimM\CompositePrimaryKeys\Http\Traits\HasCompositePrimaryKey trai
         protected $binaryColumns = [
             'user_id'
         ];
+    
+        protected $primaryKey = 'user_id';
     }
     ```
+  
+  With $hexBinaryColumns = false or omitted, $binaryKeyUser->user_id will return binary value. BinaryKeyUser::find('BINARY_VALUE') and BinaryKeyUser::create(['id' => 'BINARY_VALUE']) should be used in this case
+  
+  Optional ability to automatically encode binary values to their hex representation:
+  
+    ```php  
+    class BinaryKeyUser extends Model
+    {
+      use \MaksimM\CompositePrimaryKeys\Http\Traits\HasCompositePrimaryKey;
+    
+      protected $binaryColumns = [
+          'user_id'
+      ];
+    
+      protected $primaryKey = 'user_id';
+    
+      protected $hexBinaryColumns = true;
+    }
+    ```
+  
+  With $hexBinaryColumns = true, $binaryKeyUser->user_id will return hex value. BinaryKeyUser::find('HEX_VALUE') and BinaryKeyUser::create(['id' => 'HEX_VALUE']) should be used in this case
+  
+  *JSON output will contain hex values in both cases*
   
 - model serialization in queues (with Illuminate\Queue\SerializesModels trait)
 

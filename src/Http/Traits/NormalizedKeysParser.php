@@ -2,6 +2,7 @@
 
 namespace MaksimM\CompositePrimaryKeys\Http\Traits;
 
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use MaksimM\CompositePrimaryKeys\Exceptions\WrongKeyException;
 
@@ -47,9 +48,13 @@ trait NormalizedKeysParser
     private function getNormalizedKey()
     {
         $rawKeys = $this->getRawKey();
-        foreach ($rawKeys as $key => $value) {
-            if (in_array($key, $this->getBinaryColumns())) {
-                $rawKeys[$key] = strtoupper(bin2hex($value));
+
+        //do not normalize single key because we couldn't detect its type
+        if (count($rawKeys) > 1) {
+            foreach ($rawKeys as $key => $value) {
+                if (in_array($key, $this->getBinaryColumns()) && !$this->hexBinaryColumns()) {
+                    $rawKeys[$key] = strtoupper(bin2hex($value));
+                }
             }
         }
 
@@ -68,7 +73,7 @@ trait NormalizedKeysParser
     {
         try {
             return hex2bin($hexValue);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             throw new WrongKeyException("$key has invalid hex value");
         }
     }

@@ -3,10 +3,11 @@
 namespace MaksimM\CompositePrimaryKeys\Tests\Stubs;
 
 use Illuminate\Database\Eloquent\Model;
+use MaksimM\CompositePrimaryKeys\Http\Traits\HasCompositePrimaryKey;
 
 class TestBinaryUser extends Model
 {
-    use \MaksimM\CompositePrimaryKeys\Http\Traits\HasCompositePrimaryKey;
+    use HasCompositePrimaryKey;
 
     protected $table = 'binary_users';
 
@@ -27,6 +28,11 @@ class TestBinaryUser extends Model
 
     public function organization()
     {
-        return $this->belongsTo('TestOrganization', 'organization_id', 'organization_id');
+        return $this->belongsTo(TestOrganization::class, 'organization_id', 'organization_id');
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(TestRole::class, 'role_id', 'role_id');
     }
 }

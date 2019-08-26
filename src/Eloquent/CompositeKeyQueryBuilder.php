@@ -4,6 +4,7 @@ namespace MaksimM\CompositePrimaryKeys\Eloquent;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
 use MaksimM\CompositePrimaryKeys\Exceptions\WrongKeyException;
 
@@ -15,9 +16,9 @@ class CompositeKeyQueryBuilder extends Builder
      * @param mixed $id
      * @param array $columns
      *
-     * @throws WrongKeyException
+     *@throws WrongKeyException
      *
-     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|static[]|static|null
+     * @return \Illuminate\Database\Eloquent\Model|Collection|static[]|static|null
      */
     public function find($id, $columns = ['*'])
     {
