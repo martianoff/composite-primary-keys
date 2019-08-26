@@ -69,7 +69,8 @@ trait CompositeRelationships
         return $relationQuery;
     }
 
-    protected function executeWithinOptionalBinaryTransformation(Closure $relation, ...$models){
+    protected function executeWithinOptionalBinaryTransformation(Closure $relation, ...$models)
+    {
         foreach ($models as $model) {
             if (method_exists($model, 'disableBinaryMutators')) {
                 $model->disableBinaryMutators();
@@ -81,9 +82,9 @@ trait CompositeRelationships
                 $model->enableBinaryMutators();
             }
         }
+
         return $relationResult;
     }
-
 
     /**
      * Instantiate a new BelongsTo relationship.
@@ -98,7 +99,7 @@ trait CompositeRelationships
      */
     protected function newBelongsTo(Builder $query, Model $child, $foreignKey, $ownerKey, $relation)
     {
-        return $this->executeWithinOptionalBinaryTransformation(function() use ($query, $child, $foreignKey, $ownerKey, $relation) {
+        return $this->executeWithinOptionalBinaryTransformation(function () use ($query, $child, $foreignKey, $ownerKey, $relation) {
             return new CompositeBelongsTo($query, $child, $foreignKey, $ownerKey, $relation);
         }, $query->getModel(), $child);
     }
@@ -108,13 +109,14 @@ trait CompositeRelationships
      *
      * @param Builder $query
      * @param Model   $parent
-     * @param  string $foreignKey
-     * @param  string $localKey
+     * @param string  $foreignKey
+     * @param string  $localKey
+     *
      * @return HasOne
      */
     protected function newHasOne(Builder $query, Model $parent, $foreignKey, $localKey)
     {
-        return $this->executeWithinOptionalBinaryTransformation(function() use ($query, $parent, $foreignKey, $localKey) {
+        return $this->executeWithinOptionalBinaryTransformation(function () use ($query, $parent, $foreignKey, $localKey) {
             return new HasOne($query, $parent, $foreignKey, $localKey);
         }, $query->getModel(), $parent);
     }
@@ -124,14 +126,15 @@ trait CompositeRelationships
      *
      * @param Builder $query
      * @param Model   $parent
-     * @param  string $type
-     * @param  string $id
-     * @param  string $localKey
+     * @param string  $type
+     * @param string  $id
+     * @param string  $localKey
+     *
      * @return MorphOne
      */
     protected function newMorphOne(Builder $query, Model $parent, $type, $id, $localKey)
     {
-        return $this->executeWithinOptionalBinaryTransformation(function() use ($query, $parent, $type, $id, $localKey) {
+        return $this->executeWithinOptionalBinaryTransformation(function () use ($query, $parent, $type, $id, $localKey) {
             return new MorphOne($query, $parent, $type, $id, $localKey);
         }, $query->getModel(), $parent);
     }
@@ -141,15 +144,16 @@ trait CompositeRelationships
      *
      * @param Builder $query
      * @param Model   $parent
-     * @param  string $foreignKey
-     * @param  string $ownerKey
-     * @param  string $type
-     * @param  string $relation
+     * @param string  $foreignKey
+     * @param string  $ownerKey
+     * @param string  $type
+     * @param string  $relation
+     *
      * @return MorphTo
      */
     protected function newMorphTo(Builder $query, Model $parent, $foreignKey, $ownerKey, $type, $relation)
     {
-        return $this->executeWithinOptionalBinaryTransformation(function() use ($query, $parent, $foreignKey, $ownerKey, $type, $relation) {
+        return $this->executeWithinOptionalBinaryTransformation(function () use ($query, $parent, $foreignKey, $ownerKey, $type, $relation) {
             return new MorphTo($query, $parent, $foreignKey, $ownerKey, $type, $relation);
         }, $query->getModel(), $parent);
     }
@@ -159,13 +163,14 @@ trait CompositeRelationships
      *
      * @param Builder $query
      * @param Model   $parent
-     * @param  string $foreignKey
-     * @param  string $localKey
+     * @param string  $foreignKey
+     * @param string  $localKey
+     *
      * @return HasMany
      */
     protected function newHasMany(Builder $query, Model $parent, $foreignKey, $localKey)
     {
-        return $this->executeWithinOptionalBinaryTransformation(function() use ($query, $parent, $foreignKey, $localKey) {
+        return $this->executeWithinOptionalBinaryTransformation(function () use ($query, $parent, $foreignKey, $localKey) {
             return new HasMany($query, $parent, $foreignKey, $localKey);
         }, $query->getModel(), $parent);
     }
@@ -176,15 +181,16 @@ trait CompositeRelationships
      * @param Builder $query
      * @param Model   $farParent
      * @param Model   $throughParent
-     * @param  string $firstKey
-     * @param  string $secondKey
-     * @param  string $localKey
-     * @param  string $secondLocalKey
+     * @param string  $firstKey
+     * @param string  $secondKey
+     * @param string  $localKey
+     * @param string  $secondLocalKey
+     *
      * @return HasManyThrough
      */
     protected function newHasManyThrough(Builder $query, Model $farParent, Model $throughParent, $firstKey, $secondKey, $localKey, $secondLocalKey)
     {
-        return $this->executeWithinOptionalBinaryTransformation(function() use ($query, $farParent, $throughParent, $firstKey, $secondKey, $localKey, $secondLocalKey) {
+        return $this->executeWithinOptionalBinaryTransformation(function () use ($query, $farParent, $throughParent, $firstKey, $secondKey, $localKey, $secondLocalKey) {
             return new HasManyThrough($query, $farParent, $throughParent, $firstKey, $secondKey, $localKey, $secondLocalKey);
         }, $query->getModel(), $farParent);
     }
@@ -194,14 +200,15 @@ trait CompositeRelationships
      *
      * @param Builder $query
      * @param Model   $parent
-     * @param  string $type
-     * @param  string $id
-     * @param  string $localKey
+     * @param string  $type
+     * @param string  $id
+     * @param string  $localKey
+     *
      * @return MorphMany
      */
     protected function newMorphMany(Builder $query, Model $parent, $type, $id, $localKey)
     {
-        return $this->executeWithinOptionalBinaryTransformation(function() use ($query, $parent, $type, $id, $localKey) {
+        return $this->executeWithinOptionalBinaryTransformation(function () use ($query, $parent, $type, $id, $localKey) {
             return new MorphMany($query, $parent, $type, $id, $localKey);
         }, $query->getModel(), $parent);
     }
@@ -211,18 +218,19 @@ trait CompositeRelationships
      *
      * @param Builder $query
      * @param Model   $parent
-     * @param  string $table
-     * @param  string $foreignPivotKey
-     * @param  string $relatedPivotKey
-     * @param  string $parentKey
-     * @param  string $relatedKey
-     * @param  string $relationName
+     * @param string  $table
+     * @param string  $foreignPivotKey
+     * @param string  $relatedPivotKey
+     * @param string  $parentKey
+     * @param string  $relatedKey
+     * @param string  $relationName
+     *
      * @return BelongsToMany
      */
     protected function newBelongsToMany(Builder $query, Model $parent, $table, $foreignPivotKey, $relatedPivotKey,
         $parentKey, $relatedKey, $relationName = null)
     {
-        return $this->executeWithinOptionalBinaryTransformation(function() use ($query, $parent, $table, $foreignPivotKey, $relatedPivotKey, $parentKey, $relatedKey, $relationName) {
+        return $this->executeWithinOptionalBinaryTransformation(function () use ($query, $parent, $table, $foreignPivotKey, $relatedPivotKey, $parentKey, $relatedKey, $relationName) {
             return new BelongsToMany($query, $parent, $table, $foreignPivotKey, $relatedPivotKey, $parentKey, $relatedKey, $relationName);
         }, $query->getModel(), $parent);
     }
@@ -232,21 +240,22 @@ trait CompositeRelationships
      *
      * @param Builder $query
      * @param Model   $parent
-     * @param  string $name
-     * @param  string $table
-     * @param  string $foreignPivotKey
-     * @param  string $relatedPivotKey
-     * @param  string $parentKey
-     * @param  string $relatedKey
-     * @param  string $relationName
-     * @param  bool                                  $inverse
+     * @param string  $name
+     * @param string  $table
+     * @param string  $foreignPivotKey
+     * @param string  $relatedPivotKey
+     * @param string  $parentKey
+     * @param string  $relatedKey
+     * @param string  $relationName
+     * @param bool    $inverse
+     *
      * @return MorphToMany
      */
     protected function newMorphToMany(Builder $query, Model $parent, $name, $table, $foreignPivotKey,
         $relatedPivotKey, $parentKey, $relatedKey,
         $relationName = null, $inverse = false)
     {
-        return $this->executeWithinOptionalBinaryTransformation(function() use ($query, $parent, $name, $table, $foreignPivotKey, $relatedPivotKey, $parentKey, $relatedKey,
+        return $this->executeWithinOptionalBinaryTransformation(function () use ($query, $parent, $name, $table, $foreignPivotKey, $relatedPivotKey, $parentKey, $relatedKey,
             $relationName, $inverse) {
             return new MorphToMany($query, $parent, $name, $table, $foreignPivotKey, $relatedPivotKey, $parentKey, $relatedKey,
                 $relationName, $inverse);

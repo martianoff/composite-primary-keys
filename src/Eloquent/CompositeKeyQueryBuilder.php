@@ -62,8 +62,8 @@ class CompositeKeyQueryBuilder extends Builder
     /**
      * Eagerly load the relationship on a set of models.
      *
-     * @param array    $models
-     * @param string   $name
+     * @param array   $models
+     * @param string  $name
      * @param Closure $constraints
      *
      * @return array
