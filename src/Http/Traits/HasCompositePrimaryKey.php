@@ -284,6 +284,4 @@ trait HasCompositePrimaryKey
             return $this->where($this->getRouteKeyName(), $value)->first();
         }
     }
-
-
 }

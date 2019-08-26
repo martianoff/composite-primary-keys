@@ -1,12 +1,9 @@
 <?php
 
-
 namespace MaksimM\CompositePrimaryKeys\Http\Traits;
-
 
 trait OptionalBinaryTransformation
 {
-
     protected $hexBinaryColumns = false;
 
     private $shouldMutate = true;
@@ -16,15 +13,18 @@ trait OptionalBinaryTransformation
         return $this->hexBinaryColumns;
     }
 
-    public function disableBinaryMutators(){
+    public function disableBinaryMutators()
+    {
         $this->shouldMutate = false;
     }
 
-    public function enableBinaryMutators(){
+    public function enableBinaryMutators()
+    {
         $this->shouldMutate = true;
     }
 
-    protected function isAllowedToMutatateBinaryAttributes(){
+    protected function isAllowedToMutatateBinaryAttributes()
+    {
         return $this->shouldMutate;
     }
 
@@ -71,5 +71,4 @@ trait OptionalBinaryTransformation
 
         return parent::setMutatedAttributeValue($key, $value);
     }
-
 }
