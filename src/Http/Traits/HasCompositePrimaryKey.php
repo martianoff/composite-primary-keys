@@ -22,8 +22,8 @@ trait HasCompositePrimaryKey
     public static function bootHasCompositePrimaryKey()
     {
         static::creating(function ($model) {
-            foreach($model->getRawKeyName() as $key) {
-                if(!isset($model->{$key}) && in_array($key, $model->getBinaryColumns())) {
+            foreach ($model->getRawKeyName() as $key) {
+                if (!isset($model->{$key}) && in_array($key, $model->getBinaryColumns())) {
                     $v = uniqid(rand(), true);
                     $model->{$key} = $model->hexBinaryColumns() ? strtoupper(
                         md5($v)
