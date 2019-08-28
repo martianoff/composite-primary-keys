@@ -21,7 +21,7 @@ trait HasCompositePrimaryKey
     {
         static::creating(function ($model) {
             foreach ($model->getRawKeyName() as $key) {
-                if (!isset($model->{$key}) && in_array($key, $model->getBinaryColumns())) {
+                if ((!isset($model->{$key}) || empty($model->{$key})) && in_array($key, $model->getBinaryColumns())) {
                     $v = uniqid(rand(), true);
                     $model->{$key} = $model->hexBinaryColumns() ? strtoupper(
                         md5($v)
@@ -155,8 +155,8 @@ trait HasCompositePrimaryKey
         } else {
             //remap hex ID to binary ID even if index is not composite
             if ($this->shouldProcessBinaryAttribute($keys[0])) {
-                $ids = array_map(function ($hex) {
-                    return hex2bin($hex);
+                $ids = array_map(function ($hex) use ($keys) {
+                    return $this->recoverBinaryKey($keys[0],$hex);
                 }, $ids);
             }
             if ($inverse) {
