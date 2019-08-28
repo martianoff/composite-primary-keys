@@ -156,7 +156,7 @@ trait HasCompositePrimaryKey
             //remap hex ID to binary ID even if index is not composite
             if ($this->shouldProcessBinaryAttribute($keys[0])) {
                 $ids = array_map(function ($hex) use ($keys) {
-                    return $this->recoverBinaryKey($keys[0],$hex);
+                    return $this->recoverBinaryKey($keys[0], $hex);
                 }, $ids);
             }
             if ($inverse) {
