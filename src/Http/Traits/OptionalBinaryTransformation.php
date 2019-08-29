@@ -23,7 +23,7 @@ trait OptionalBinaryTransformation
         $this->shouldMutate = true;
     }
 
-    protected function isAllowedToMutatateBinaryAttributes()
+    protected function isAllowedToMutateBinaryAttributes()
     {
         return $this->shouldMutate;
     }
@@ -35,7 +35,7 @@ trait OptionalBinaryTransformation
 
     public function hasGetMutator($key)
     {
-        if ($this->shouldProcessBinaryAttribute($key) && isset($this->{$key}) && $this->isAllowedToMutatateBinaryAttributes()) {
+        if ($this->shouldProcessBinaryAttribute($key) && isset($this->{$key}) && $this->isAllowedToMutateBinaryAttributes()) {
             return true;
         }
 
@@ -53,7 +53,7 @@ trait OptionalBinaryTransformation
 
     public function hasSetMutator($key)
     {
-        if ($this->shouldProcessBinaryAttribute($key) && $this->isAllowedToMutatateBinaryAttributes()) {
+        if ($this->shouldProcessBinaryAttribute($key) && $this->isAllowedToMutateBinaryAttributes()) {
             return true;
         }
 
