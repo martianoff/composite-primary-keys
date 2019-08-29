@@ -12,7 +12,8 @@ class CompositeBelongsToMany extends BelongsToMany
 {
     use CompositeRelationships;
 
-    private function normalizeValue($value){
+    private function normalizeValue($value)
+    {
         return ctype_xdigit($value) ? $this->getQuery()->getModel()->recoverBinaryKey($this->relatedKey, $value) : $value;
     }
 
@@ -46,7 +47,7 @@ class CompositeBelongsToMany extends BelongsToMany
             return $this->normalizeIds($value->toArray());
         }
 
-        return (array)$this->normalizeIds($value);
+        return (array) $this->normalizeIds($value);
     }
 
     /**
