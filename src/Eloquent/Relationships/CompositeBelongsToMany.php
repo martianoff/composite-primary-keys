@@ -1,8 +1,6 @@
 <?php
 
-
 namespace MaksimM\CompositePrimaryKeys\Eloquent\Relationships;
-
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -12,20 +10,19 @@ use MaksimM\CompositePrimaryKeys\Http\Traits\CompositeRelationships;
 
 class CompositeBelongsToMany extends BelongsToMany
 {
-
     use CompositeRelationships;
-
 
     /**
      * Get all of the IDs from the given mixed value.
      *
-     * @param  mixed  $value
+     * @param mixed $value
+     *
      * @return array
      */
     protected function parseIds($value)
     {
         if ($value instanceof Model) {
-            return [$this->executeWithinOptionalBinaryTransformation(function() use ($value) {
+            return [$this->executeWithinOptionalBinaryTransformation(function () use ($value) {
                 return $value->{$this->relatedKey};
             }, $value)];
         }
@@ -44,14 +41,14 @@ class CompositeBelongsToMany extends BelongsToMany
     /**
      * Get the ID from the given mixed value.
      *
-     * @param  mixed  $value
+     * @param mixed $value
+     *
      * @return mixed
      */
     protected function parseId($value)
     {
-        return $value instanceof Model ? $this->executeWithinOptionalBinaryTransformation(function() use ($value) {
+        return $value instanceof Model ? $this->executeWithinOptionalBinaryTransformation(function () use ($value) {
             $value->{$this->relatedKey};
-        }, $value): $value;
+        }, $value) : $value;
     }
-
 }
