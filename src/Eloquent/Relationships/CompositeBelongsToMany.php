@@ -77,8 +77,9 @@ class CompositeBelongsToMany extends BelongsToMany
     /**
      * Create a new pivot attachment record.
      *
-     * @param  int   $id
-     * @param  bool  $timed
+     * @param int  $id
+     * @param bool $timed
+     *
      * @return array
      */
     protected function baseAttachRecord($id, $timed)
