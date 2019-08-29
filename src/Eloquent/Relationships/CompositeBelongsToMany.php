@@ -12,6 +12,12 @@ class CompositeBelongsToMany extends BelongsToMany
 {
     use CompositeRelationships;
 
+    private function normalizeIds($ids){
+        return $this->getQuery()->getModel()->hexBinaryColumns($this->relatedKey) ? (is_array($ids) ? array_map(function($id){
+            return $this->getQuery()->getModel()->recoverBinaryKey($this->relatedKey, $id);
+        }, $ids) : $this->getQuery()->getModel()->recoverBinaryKey($this->relatedKey, $ids)) : $ids;
+    }
+
     /**
      * Get all of the IDs from the given mixed value.
      *
@@ -28,14 +34,14 @@ class CompositeBelongsToMany extends BelongsToMany
         }
 
         if ($value instanceof Collection) {
-            return $value->pluck($this->relatedKey)->all();
+            return $this->normalizeIds($value->pluck($this->relatedKey)->all());
         }
 
         if ($value instanceof BaseCollection) {
-            return $value->toArray();
+            return $this->normalizeIds($value->toArray());
         }
 
-        return (array) $value;
+        return ctype_xdigit($value) ? $this->normalizeIds([$value]) : [$value];
     }
 
     /**

@@ -69,7 +69,7 @@ trait NormalizedKeysParser
      *
      * @return bool|string
      */
-    private function recoverBinaryKey($key, $hexValue)
+    public function recoverBinaryKey($key, $hexValue)
     {
         try {
             return hex2bin($hexValue);
