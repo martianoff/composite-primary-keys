@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Str;
 use MaksimM\CompositePrimaryKeys\Eloquent\Relationships\CompositeBelongsTo;
+use MaksimM\CompositePrimaryKeys\Eloquent\Relationships\CompositeBelongsToMany;
 
 trait CompositeRelationships
 {
@@ -231,7 +232,7 @@ trait CompositeRelationships
         $parentKey, $relatedKey, $relationName = null)
     {
         return $this->executeWithinOptionalBinaryTransformation(function () use ($query, $parent, $table, $foreignPivotKey, $relatedPivotKey, $parentKey, $relatedKey, $relationName) {
-            return new BelongsToMany($query, $parent, $table, $foreignPivotKey, $relatedPivotKey, $parentKey, $relatedKey, $relationName);
+            return new CompositeBelongsToMany($query, $parent, $table, $foreignPivotKey, $relatedPivotKey, $parentKey, $relatedKey, $relationName);
         }, $query->getModel(), $parent);
     }
 
