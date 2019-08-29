@@ -12,11 +12,15 @@ class CompositeBelongsToMany extends BelongsToMany
 {
     use CompositeRelationships;
 
+    private function normalizeValue($value){
+        return ctype_xdigit($value) ? $this->getQuery()->getModel()->recoverBinaryKey($this->relatedKey, $value) : $value;
+    }
+
     private function normalizeIds($ids)
     {
-        return $this->getQuery()->getModel()->hexBinaryColumns($this->relatedKey) ? (is_array($ids) ? array_map(function ($id) {
-            return $this->getQuery()->getModel()->recoverBinaryKey($this->relatedKey, $id);
-        }, $ids) : $this->getQuery()->getModel()->recoverBinaryKey($this->relatedKey, $ids)) : $ids;
+        return $this->getQuery()->getModel()->hexBinaryColumns() ? (is_array($ids) ? array_map(function ($id) {
+            return $this->normalizeValue($id);
+        }, $ids) : $this->normalizeValue($ids)) : $ids;
     }
 
     /**
@@ -42,7 +46,7 @@ class CompositeBelongsToMany extends BelongsToMany
             return $this->normalizeIds($value->toArray());
         }
 
-        return ctype_xdigit($value) ? $this->normalizeIds([$value]) : [$value];
+        return (array)$this->normalizeIds($value);
     }
 
     /**
