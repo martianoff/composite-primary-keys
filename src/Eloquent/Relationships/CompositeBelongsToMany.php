@@ -12,8 +12,9 @@ class CompositeBelongsToMany extends BelongsToMany
 {
     use CompositeRelationships;
 
-    private function normalizeIds($ids){
-        return $this->getQuery()->getModel()->hexBinaryColumns($this->relatedKey) ? (is_array($ids) ? array_map(function($id){
+    private function normalizeIds($ids)
+    {
+        return $this->getQuery()->getModel()->hexBinaryColumns($this->relatedKey) ? (is_array($ids) ? array_map(function ($id) {
             return $this->getQuery()->getModel()->recoverBinaryKey($this->relatedKey, $id);
         }, $ids) : $this->getQuery()->getModel()->recoverBinaryKey($this->relatedKey, $ids)) : $ids;
     }
@@ -83,8 +84,9 @@ class CompositeBelongsToMany extends BelongsToMany
     /**
      * Create a new pivot attachment record.
      *
-     * @param  int   $id
-     * @param  bool  $timed
+     * @param int  $id
+     * @param bool $timed
+     *
      * @return array
      */
     protected function baseAttachRecord($id, $timed)
