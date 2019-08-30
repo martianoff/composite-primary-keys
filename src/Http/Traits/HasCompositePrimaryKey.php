@@ -186,7 +186,7 @@ trait HasCompositePrimaryKey
         return $this->newQueryWithoutScopes()->applyIds(
             array_map(
                 function ($normalizedKey) {
-                    return $this->parseNormalizedKey($normalizedKey);
+                    return $this->hasCompositeIndex() ? $this->parseNormalizedKey($normalizedKey) : $normalizedKey;
                 },
                 $ids
             )
