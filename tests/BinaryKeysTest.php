@@ -4,6 +4,7 @@ namespace MaksimM\CompositePrimaryKeys\Tests;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Routing\Middleware\SubstituteBindings;
+use MaksimM\CompositePrimaryKeys\Tests\Stubs\TestBinaryRole;
 use MaksimM\CompositePrimaryKeys\Tests\Stubs\TestBinaryUser;
 use MaksimM\CompositePrimaryKeys\Tests\Stubs\TestRole;
 
@@ -29,6 +30,52 @@ class BinaryKeysTest extends CompositeKeyBaseUnit
         ]);
         $this->assertNotNull($model);
         $this->assertInstanceOf(TestBinaryUser::class, $model);
+
+        return $model;
+    }
+
+    /** @test */
+    public function validateRelationLookup()
+    {
+        /**
+         * @var TestBinaryUser
+         */
+        $model = TestBinaryUser::with([
+            'role',
+            'binary_role'
+        ])->find([
+            'user_id'         => md5(20002, true),
+            'organization_id' => 101,
+        ]);
+        $this->assertNotNull($model);
+        $this->assertNotNull($model->toArray()['role']);
+        $this->assertNotNull($model->toArray()['binary_role']);
+        $this->assertInstanceOf(TestBinaryUser::class, $model);
+        $this->assertInstanceOf(TestRole::class, $model->role);
+        $this->assertInstanceOf(TestBinaryRole::class, $model->binary_role);
+
+        return $model;
+    }
+
+    /** @test */
+    public function validateMissingRelationLookup()
+    {
+        /**
+         * @var TestBinaryUser
+         */
+        $model = TestBinaryUser::with([
+            'role',
+            'binary_role'
+        ])->find([
+            'user_id'         => md5(20000, true),
+            'organization_id' => 100,
+        ]);
+        $this->assertNotNull($model);
+        $this->assertNotNull($model->toArray()['role']);
+        $this->assertNull($model->toArray()['binary_role']);
+        $this->assertInstanceOf(TestBinaryUser::class, $model);
+        $this->assertInstanceOf(TestRole::class, $model->role);
+        $this->assertNull($model->binary_role);
 
         return $model;
     }

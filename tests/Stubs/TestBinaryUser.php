@@ -35,4 +35,15 @@ class TestBinaryUser extends Model
     {
         return $this->belongsTo(TestRole::class, 'role_id', 'role_id');
     }
+
+    public function binary_role()
+    {
+        return $this->belongsTo(TestBinaryRole::class, 'binary_role_id', 'role_id');
+    }
+
+    public function hex_binary_role()
+    {
+        return $this->belongsTo(TestBinaryRoleHex::class, 'binary_role_id', 'role_id');
+    }
+
 }

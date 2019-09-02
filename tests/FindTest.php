@@ -108,4 +108,5 @@ class FindTest extends CompositeKeyBaseUnit
         $this->assertEquals(101, $models->get(2)->organization_id);
         $this->assertEquals('Foo Bar', $models->get(2)->name);
     }
+
 }

@@ -61,17 +61,22 @@ class CompositeKeyScope
                      * @var \Illuminate\Database\Query\Builder $query
                      */
                     foreach ($this->key as $key) {
-                        if (!isset($compositeKey[$key])) {
-                            throw new MissingPrimaryKeyValueException(
-                                $key,
-                                'Missing value for key '.$key.' in record '.json_encode($compositeKey)
-                            );
+                        if(empty($compositeKey)){
+                            $query->where($query->getModel()->qualifyColumn($key), null);
                         }
+                        else {
+                            if (!isset($compositeKey[$key])) {
+                                throw new MissingPrimaryKeyValueException(
+                                    $key,
+                                    'Missing value for key '.$key.' in record '.json_encode($compositeKey)
+                                );
+                            }
 
-                        if ($this->inverse) {
-                            $query->orWhere($query->getModel()->qualifyColumn($key), '!=', $compositeKey[$key]);
-                        } else {
-                            $query->where($query->getModel()->qualifyColumn($key), $compositeKey[$key]);
+                            if ($this->inverse) {
+                                $query->orWhere($query->getModel()->qualifyColumn($key), '!=', $compositeKey[$key]);
+                            } else {
+                                $query->where($query->getModel()->qualifyColumn($key), $compositeKey[$key]);
+                            }
                         }
                     }
                 };
