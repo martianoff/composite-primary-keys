@@ -119,13 +119,7 @@ class CompositeBelongsTo extends BelongsTo
             $keys[] = $compositeKey;
         }
 
-        if (count($foreignKeys) == 1) {
-            sort($keys);
-
-            return array_values(array_unique($keys));
-        } else {
-            return $keys;
-        }
+        return $keys;
     }
 
     /**
