@@ -61,10 +61,9 @@ class CompositeKeyScope
                      * @var \Illuminate\Database\Query\Builder $query
                      */
                     foreach ($this->key as $key) {
-                        if(empty($compositeKey)){
+                        if (empty($compositeKey)) {
                             $query->where($query->getModel()->qualifyColumn($key), null);
-                        }
-                        else {
+                        } else {
                             if (!isset($compositeKey[$key])) {
                                 throw new MissingPrimaryKeyValueException(
                                     $key,

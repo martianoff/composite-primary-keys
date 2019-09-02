@@ -42,7 +42,7 @@ class BinaryKeysTest extends CompositeKeyBaseUnit
          */
         $model = TestBinaryUser::with([
             'role',
-            'binary_role'
+            'binary_role',
         ])->find([
             'user_id'         => md5(20002, true),
             'organization_id' => 101,
@@ -65,7 +65,7 @@ class BinaryKeysTest extends CompositeKeyBaseUnit
          */
         $model = TestBinaryUser::with([
             'role',
-            'binary_role'
+            'binary_role',
         ])->find([
             'user_id'         => md5(20000, true),
             'organization_id' => 100,
