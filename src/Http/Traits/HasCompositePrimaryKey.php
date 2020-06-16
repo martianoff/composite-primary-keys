@@ -12,7 +12,10 @@ use MaksimM\CompositePrimaryKeys\Scopes\CompositeKeyScope;
 
 trait HasCompositePrimaryKey
 {
-    use NormalizedKeysParser, PrimaryKeyInformation, CompositeRelationships, OptionalBinaryTransformation;
+    use NormalizedKeysParser;
+    use PrimaryKeyInformation;
+    use CompositeRelationships;
+    use OptionalBinaryTransformation;
 
     /**
      * Automatically generate unique binary id.
