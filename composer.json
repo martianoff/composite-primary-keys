@@ -32,7 +32,7 @@
     "orchestra/database": "~3.0",
     "mockery/mockery": "0.9.*",
     "fzaninotto/faker": "~1.4",
-    "phpunit/phpunit": "7",
+    "phpunit/phpunit": "7.5.20",
     "barryvdh/laravel-debugbar": "^3.1"
   },
   "autoload": {
