@@ -2,6 +2,7 @@
 
 namespace MaksimM\CompositePrimaryKeys\Tests;
 
+use MaksimM\CompositePrimaryKeys\Tests\Stubs\TestBinaryUser;
 use MaksimM\CompositePrimaryKeys\Tests\Stubs\TestUser;
 
 class UpdatesTest extends CompositeKeyBaseUnit
@@ -27,6 +28,18 @@ class UpdatesTest extends CompositeKeyBaseUnit
      *  @depends validateEmptyCounter
      */
     public function incrementingTest(TestUser $model)
+    {
+        $model->increment('counter');
+        $model->refresh();
+        $this->assertEquals(1, $model->counter);
+
+        return $model;
+    }
+
+    /** @test
+     *  @depends validateEmptyCounter
+     */
+    public function incrementingBinaryTest(TestBinaryUser $model)
     {
         $model->increment('counter');
         $model->refresh();
