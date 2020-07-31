@@ -88,7 +88,8 @@ class CompositeKeyQueryBuilder extends Builder
 
         $matchedRelations = $relation->match(
             $relation->initRelation($models, $name),
-            $eagerRelation, $name
+            $eagerRelation,
+            $name
         );
 
         $this->enableBinaryMutators($models);
