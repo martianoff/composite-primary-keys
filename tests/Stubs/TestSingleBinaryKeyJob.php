@@ -8,7 +8,8 @@ use Illuminate\Queue\SerializesModels;
 
 class TestSingleBinaryKeyJob implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     private $model;
 
