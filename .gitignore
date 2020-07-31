@@ -1,6 +1,9 @@
 vendor/
 node_modules/
 npm-debug.log
+clover.xml
+.idea
+.php_cs.cache
 
 # Laravel 4 specific
 bootstrap/compiled.php

@@ -24,6 +24,7 @@ class TestBinaryUser extends Model
 
     protected $fillable = [
         'name',
+        'counter',
     ];
 
     public function organization()
