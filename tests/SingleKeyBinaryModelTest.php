@@ -77,4 +77,24 @@ class SingleKeyBinaryModelTest extends CompositeKeyBaseUnit
         $this->assertNotNull($model->users);
         $this->assertNotNull($model->hex_users);
     }
+
+    /** @test
+     *  @depends  validateSingleModelLookup
+     */
+    public function incrementingTest(TestBinaryRole $model)
+    {
+        $model->increment('counter');
+        $model->refresh();
+        $this->assertEquals(1, $model->counter);
+    }
+
+    /** @test
+     *  @depends validateSingleModelLookup
+     */
+    public function decrementingTest(TestBinaryRole $model)
+    {
+        $model->decrement('counter');
+        $model->refresh();
+        $this->assertEquals(-1, $model->counter);
+    }
 }
