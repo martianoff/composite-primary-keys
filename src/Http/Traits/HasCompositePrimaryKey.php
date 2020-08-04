@@ -266,10 +266,7 @@ trait HasCompositePrimaryKey
         $this->incrementOrDecrementAttributeValue($column, $amount, $extra, $method);
 
         foreach ($this->getRawKeyName() as $key) {
-            $value = in_array($key, $this->binaryColumns)
-                ? hex2bin($this->getAttribute($key))
-                : $this->getAttribute($key);
-            $query->where($key, $value);
+            $query->where($key, $this->getAttribute($key));
         }
 
         return $query->{$method}($column, $amount, $extra);

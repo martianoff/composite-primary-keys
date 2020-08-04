@@ -24,6 +24,23 @@ class UpdatesTest extends CompositeKeyBaseUnit
         return $model;
     }
 
+    /** @test */
+    public function validateEmptyCounterBinaryModel()
+    {
+        /**
+         * @var TestBinaryUser
+         */
+        $model = TestBinaryUser::find([
+            'user_id'         => md5(20000, true),
+            'organization_id' => 100,
+        ]);
+        $this->assertNotNull($model);
+        $this->assertInstanceOf(TestBinaryUser::class, $model);
+        $this->assertEquals(0, $model->counter);
+
+        return $model;
+    }
+
     /** @test
      *  @depends validateEmptyCounter
      */
@@ -37,7 +54,7 @@ class UpdatesTest extends CompositeKeyBaseUnit
     }
 
     /** @test
-     *  @depends validateEmptyCounter
+     *  @depends validateEmptyCounterBinaryModel
      */
     public function incrementingBinaryTest(TestBinaryUser $model)
     {
