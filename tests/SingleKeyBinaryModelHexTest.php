@@ -25,6 +25,19 @@ class SingleKeyBinaryModelHexTest extends CompositeKeyBaseUnit
     }
 
     /** @test */
+    public function validateManyModelLookup()
+    {
+        /**
+         * @var TestBinaryRoleHex
+         */
+        $model = TestBinaryRoleHex::findMany([md5(1)])->first();
+        $this->assertNotNull($model);
+        $this->assertInstanceOf(TestBinaryRoleHex::class, $model);
+
+        return $model;
+    }
+
+    /** @test */
     public function validateSingleModelLookup()
     {
         /**
