@@ -68,7 +68,7 @@ trait HasCompositePrimaryKey
     {
         $attributes = $this->toArray();
         foreach ($attributes as $key => $value) {
-            if (in_array($key, $this->getBinaryColumns())) {
+            if (!$this->hexBinaryColumns() && in_array($key, $this->getBinaryColumns())) {
                 $attributes[$key] = strtoupper(bin2hex($value));
             }
         }

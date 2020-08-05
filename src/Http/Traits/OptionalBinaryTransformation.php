@@ -28,7 +28,7 @@ trait OptionalBinaryTransformation
         return $this->shouldMutate;
     }
 
-    private function shouldProcessBinaryAttribute($key)
+    protected function shouldProcessBinaryAttribute($key)
     {
         return $this->hexBinaryColumns() && in_array($key, $this->getBinaryColumns());
     }
