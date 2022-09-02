@@ -271,8 +271,18 @@ trait CompositeRelationships
         $relationName = null,
         $inverse = false
     ) {
-        return $this->executeWithinOptionalBinaryTransformation(function () use ($query, $parent, $name, $table, $foreignPivotKey, $relatedPivotKey, $parentKey, $relatedKey,
-            $relationName, $inverse) {
+        return $this->executeWithinOptionalBinaryTransformation(function () use (
+            $query,
+            $parent,
+            $name,
+            $table,
+            $foreignPivotKey,
+            $relatedPivotKey,
+            $parentKey,
+            $relatedKey,
+            $relationName,
+            $inverse
+        ) {
             return new MorphToMany(
                 $query,
                 $parent,
